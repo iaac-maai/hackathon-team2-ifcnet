@@ -1,6 +1,7 @@
-# hackathon-team2-ifcnet: IFC object similarity
+# hackathon-team2-ifcnet: BIM Element Checker
 
-AI Methods I hackathon, IAAC MaAI, 16 to 20 November 2026.
+AI Methods I hackathon · IAAC MaAI 2026/27 · 16 to 20 November 2026
+Faculty: Salvador Cantuarias Brañes and Serjoscha Düring
 
 ## Team
 - Bars Babila
@@ -8,8 +9,26 @@ AI Methods I hackathon, IAAC MaAI, 16 to 20 November 2026.
 - Emmanuel Marquez
 - Karthikeyan Seravanan
 
-## Topic
-An autoencoder trained on renders of BIM objects (IFCNet). It finds the most similar BIM objects and their IFC class.
+## Use case
+A BIM coordinator checks a model before handover. Our autoencoder learned what 18 common types of BIM elements look like (IFCNet renders). It flags elements that look unusual (anomaly detection) and can find similar elements (latent space).
+
+## Links
+| Part | Link |
+|---|---|
+| Model on Hugging Face | https://huggingface.co/iaac-maai/hackathon-team2-ifcnet-ae |
+| Model server on Render | (Tuesday) |
+| App on Cloudflare | (Wednesday) |
+| Impulse-talk slides | see `impulse/LINK.md` |
+
+## Repository structure
+```
+├── 01_autoencoder/      # Monday: data, notebook, model, slides
+├── impulse/LINK.md      # impulse-talk slides
+├── data/                # downloaded data, not on GitHub
+├── .gitignore
+├── LICENSE
+└── README.md
+```
 
 ## Setup (everyone, once)
 Clone **outside** the course folder, then in the VS Code terminal:
@@ -30,29 +49,17 @@ tar -xf data/IFCNetCorePng.zip -C data
 
 Open `01_autoencoder/notebook/autoencoder.ipynb` and pick the **hackathon** kernel (top right).
 
-Check: `python -c "import torch, onnxruntime, onnxscript; print('ok')"`
-
-**Rules:** never commit data, `.onnx`, `.pt` or tokens. `git pull` before you start. Small commits.
-
-## Links
-| Part | Link |
-|---|---|
-| Model on Hugging Face | (Monday) |
-| Model server on Render | (Tuesday) |
-| App on Cloudflare | (Wednesday) |
-| Impulse-talk slides | see `impulse/LINK.md` |
-
-## Folders
-| Folder | Day | Status |
-|---|---|---|
-| `01_autoencoder/` | Monday | in progress |
+**Rules:** never commit data, `.onnx`, `.pt` or tokens. `git pull` before you start.
 
 ## AI usage disclosure
 | | |
 |---|---|
 | **Tools** | ... |
 | **Why** | ... |
-| **Where** | Monday: ... Tuesday: ... Wednesday: ... Thursday: ... |
+| **Where** | Monday: ... |
 | **How** | ... |
 
 **Lessons learned:** ...
+
+## Licence
+Code: MIT. Data: IFCNet (Emunds et al. 2021, arXiv 2106.09712), no licence stated, used for non-commercial academic coursework only and not re-uploaded.
