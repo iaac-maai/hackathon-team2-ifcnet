@@ -18,6 +18,7 @@ Clone **outside** the course folder, then in the VS Code terminal:
 conda create -n hackathon python=3.12 -y
 conda activate hackathon
 pip install -r 01_autoencoder/requirements.txt
+pip install ipykernel
 ```
 
 Download the data (about 450 MB, not on GitHub):
