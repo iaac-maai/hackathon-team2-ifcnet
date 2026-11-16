@@ -4,20 +4,21 @@ library_name: onnx
 tags:
 - autoencoder
 - anomaly-detection
+- similarity-search
 - bim
 - ifc
 - architecture
 ---
 
-# hackathon-team2-ifcnet-ae: BIM element anomaly detector
+# hackathon-team2-ifcnet-ae: BIM element checker
 
-A small convolutional autoencoder that learned what 18 common types of BIM elements look like (IFCNet renders). If it cannot rebuild an element well, the element is **unusual** and a person should check it.
+A small convolutional autoencoder that learned what 18 common types of BIM elements look like (IFCNet renders). If it cannot rebuild an element well, the element is **unusual** and a person should check it. Its latent vector also finds the **5 most similar elements**.
 
 Built in the AI Methods I hackathon, Master in AI for Architecture & Business Innovation (MaAI), IAAC, November 2026.
 Code: https://github.com/iaac-maai/hackathon-team2-ifcnet
 
 ## Use case
-**BIM Element Checker:** a BIM coordinator uploads a render or screenshot of one element. The model returns a score and a verdict: *typical* or *unusual object, check it*.
+**BIM Element Checker:** a BIM coordinator uploads a render or screenshot of one element. The model returns a score and a verdict (*typical* or *unusual object, check it*) and the 5 most similar elements from a gallery.
 
 ## Data
 - **IFCNet** (IFCNetCore, multi-view PNG renders), 20 IFC classes, 12 views per object. https://ifcnet.e3d.rwth-aachen.de/
@@ -37,12 +38,14 @@ Code: https://github.com/iaac-maai/hackathon-team2-ifcnet
 ## Training and comparison
 Same split and seed for all setups; 30 epochs, Adam (lr 1e-3), batch 128, MSE loss, best epoch by validation MSE. CPU.
 
-| Model | Parameters | Val MSE | Test MSE | ROC AUC | Precision | Recall |
-|---|---|---|---|---|---|---|
-| dense_16 | 4,334,864 | 0.00179 | 0.00180 | 0.821 | 0.399 | 0.396 |
-| dense_64 | 4,347,200 | 0.00154 | 0.00154 | 0.810 | 0.391 | 0.420 |
-| conv_16 | 199,745 | 0.00158 | 0.00158 | 0.884 | 0.449 | 0.515 |
-| **conv_64 (this model)** | 593,009 | **0.00055** | **0.00056** | **0.891** | **0.458** | **0.629** |
+| Model | Parameters | Val MSE | Test MSE | ROC AUC | Precision | Recall | P@5 |
+|---|---|---|---|---|---|---|---|
+| dense_16 | 4,334,864 | 0.00179 | 0.00180 | 0.821 | 0.399 | 0.396 | 0.496 |
+| dense_64 | 4,347,200 | 0.00154 | 0.00154 | 0.810 | 0.391 | 0.420 | 0.506 |
+| conv_16 | 199,745 | 0.00158 | 0.00158 | 0.884 | 0.449 | 0.515 | 0.507 |
+| **conv_64 (this model)** | 593,009 | **0.00055** | **0.00056** | **0.891** | **0.467** | **0.627** | **0.534** |
+
+P@5: share of the 5 nearest test neighbours (cosine similarity of the L2-normalised latent) with the same IFC class. Baselines: raw pixels 0.504, random 0.063.
 
 ![Training and validation loss](03_val_curves.png)
 
@@ -51,10 +54,16 @@ Same split and seed for all setups; 30 epochs, Adam (lr 1e-3), batch 128, MSE lo
 
 ![Input (top) and reconstruction (bottom)](05_reconstructions.png)
 
+### Similarity search
+`gallery.npz` holds the latent vectors of the test images. A new element is encoded, L2-normalised and compared with the gallery by cosine similarity; the 5 closest are returned.
+
+![Query and 5 nearest elements](06_similarity.png)
+
 ## Limits: where the model fails
-- **Many false alarms:** precision 0.46. Anomalies are 6% of the test set, and the threshold flags 5% of normal images.
+- **Many false alarms:** precision 0.47. Anomalies are 6% of the test set, and the threshold flags 5% of normal images.
 - **Misses a third of the anomalies** (recall 0.63), mostly railings and stairs that are simple, compact shapes.
 - **Size bias:** plain MSE ranked thin objects as *more* normal; the score divides by pixel mass to fix this, so very small or very large objects can still be scored wrongly.
+- **Weak similarity:** P@5 0.53, only a little better than raw pixels (0.50). The latent space was trained for reconstruction, not for classes.
 - **Clean renders only:** trained on IFCNet renders. Real Revit or Rhino screenshots (other angles, colours, backgrounds) may score as unusual.
 - **Small setup:** 64 px, 3 views per object, at most 300 objects per class, one seed; not fully trained.
 
@@ -77,9 +86,13 @@ def preprocess(path, size=cfg["preprocessing"]["img_size"]):
 
 sess = ort.InferenceSession(model_path, providers=["CPUExecutionProvider"])
 reconstruction, latent, score = sess.run(["reconstruction", "latent", "score"],
-                                         {"image": preprocess("my_element.png")})
+                                       {"image": preprocess("my_element.png")})
 verdict = "unusual object, check it" if score[0] > cfg["threshold"] else "typical"
 print(f"score {score[0]:.4f} -> {verdict}")
+
+# similarity: 5 nearest elements in the gallery
+gallery = np.load(hf_hub_download(repo, "gallery.npz"), allow_pickle=True)
+print(gallery.files)   # see the keys: embeddings, labels, ...
 ```
 
 ## Credits
