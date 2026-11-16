@@ -24,9 +24,10 @@
   },
   "outputs": {
     "reconstruction": "[batch, 1, 64, 64]",
+    "latent": "[batch, 64]",
     "score": "[batch] mean squared error"
   },
-  "threshold": 0.034013498574495316,
+  "threshold": 0.034041643142700195,
   "threshold_rule": "95th percentile of reconstruction error on validation normal images",
   "decision": "score > threshold -> 'unusual object, check it'",
   "normal_classes": [
@@ -55,8 +56,8 @@
   ],
   "metrics_test": {
     "roc_auc": 0.891,
-    "precision": 0.467,
-    "recall": 0.627,
+    "precision": 0.458,
+    "recall": 0.629,
     "test_mse": 0.00056
   }
 }
