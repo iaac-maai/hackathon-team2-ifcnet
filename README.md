@@ -1,4 +1,4 @@
-# group2_hackathon: IFC object similarity
+# hackathon-team2-ifcnet: IFC object similarity
 
 AI Methods I hackathon, IAAC MaAI, 16 to 20 November 2026.
 
