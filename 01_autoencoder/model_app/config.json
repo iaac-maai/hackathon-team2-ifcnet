@@ -1,7 +1,7 @@
 {
   "model_file": "model.onnx",
   "model_name": "conv_64",
-  "task": "anomaly detection by reconstruction error",
+  "task": "anomaly detection by reconstruction error + similarity search on the latent vector",
   "input": {
     "name": "image",
     "shape": [
@@ -25,10 +25,10 @@
   "outputs": {
     "reconstruction": "[batch, 1, 64, 64]",
     "latent": "[batch, 64]",
-    "score": "[batch] mean squared error"
+    "score": "[batch] MSE divided by the object's pixel mass (mean pixel + 0.001)"
   },
-  "threshold": 0.034041643142700195,
-  "threshold_rule": "95th percentile of reconstruction error on validation normal images",
+  "threshold": 0.034013498574495316,
+  "threshold_rule": "95th percentile of the score (MSE / pixel mass) on validation normal images",
   "decision": "score > threshold -> 'unusual object, check it'",
   "normal_classes": [
     "IfcAirTerminal",
@@ -56,8 +56,17 @@
   ],
   "metrics_test": {
     "roc_auc": 0.891,
-    "precision": 0.458,
-    "recall": 0.629,
+    "precision": 0.467,
+    "recall": 0.627,
     "test_mse": 0.00056
+  },
+  "similarity": {
+    "gallery_file": "gallery.npz",
+    "embedding": "latent output, L2-normalised: e = z / ||z||",
+    "metric": "cosine similarity = dot product of embeddings",
+    "top_k": 5,
+    "precision_at_5_test": 0.534,
+    "baseline_raw_pixels": 0.504,
+    "chance": 0.063
   }
 }
