@@ -1,0 +1,62 @@
+{
+  "model_file": "model.onnx",
+  "model_name": "conv_64",
+  "task": "anomaly detection by reconstruction error",
+  "input": {
+    "name": "image",
+    "shape": [
+      null,
+      1,
+      64,
+      64
+    ],
+    "dtype": "float32"
+  },
+  "preprocessing": {
+    "steps": [
+      "convert to greyscale (PIL 'L')",
+      "resize to 64x64",
+      "scale to 0-1 (pixel / 255)",
+      "invert: x = 1 - x (object bright on dark)"
+    ],
+    "img_size": 64,
+    "invert": true
+  },
+  "outputs": {
+    "reconstruction": "[batch, 1, 64, 64]",
+    "score": "[batch] mean squared error"
+  },
+  "threshold": 0.034013498574495316,
+  "threshold_rule": "95th percentile of reconstruction error on validation normal images",
+  "decision": "score > threshold -> 'unusual object, check it'",
+  "normal_classes": [
+    "IfcAirTerminal",
+    "IfcBeam",
+    "IfcCableCarrierFitting",
+    "IfcCableCarrierSegment",
+    "IfcDoor",
+    "IfcDuctFitting",
+    "IfcDuctSegment",
+    "IfcFurniture",
+    "IfcLamp",
+    "IfcOutlet",
+    "IfcPipeFitting",
+    "IfcPipeSegment",
+    "IfcPlate",
+    "IfcSanitaryTerminal",
+    "IfcSlab",
+    "IfcSpaceHeater",
+    "IfcValve",
+    "IfcWall"
+  ],
+  "anomaly_classes_used_in_eval": [
+    "IfcStair",
+    "IfcRailing"
+  ],
+  "metrics_test": {
+    "roc_auc": 0.891,
+    "precision": 0.467,
+    "recall": 0.627,
+    "test_mse": 0.00056
+  }
+}
