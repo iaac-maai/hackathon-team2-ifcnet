@@ -1,0 +1,116 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>IFCNet-style multi-view renderer</title>
+<style>
+  body { font-family: Arial, sans-serif; margin: 16px; background: #fafafa; color: #222; }
+  .controls label { margin-right: 14px; }
+  .row { margin: 10px 0; }
+  .row img { border: 1px solid #ccc; margin: 2px; background: #fff; }
+  #log { font-size: 12px; color: #555; }
+</style>
+<script type="importmap">
+{ "imports": {
+    "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+    "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/" } }
+</script>
+</head>
+<body>
+<h3>IFCNet-style multi-view renderer (test)</h3>
+<p>Choose one or more <code>.obj</code> files. Each object is centred, rotated, and rendered from 12 views
+(30&deg; steps around the up axis, like IFCNet). Compare with the IFCNet PNGs of the same object id.</p>
+<div class="controls">
+  <input type="file" id="file" accept=".obj" multiple>
+  <label>Elevation (&deg;) <input id="elev" type="number" value="30" style="width:55px"></label>
+  <label><input id="zup" type="checkbox" checked> Z-up (IFC)</label>
+  <label>Size (px) <input id="size" type="number" value="224" style="width:60px"></label>
+  <label><input id="persp" type="checkbox"> Perspective camera</label>
+  <label>Azimuth offset (&deg;) <input id="azoff" type="number" value="90" style="width:55px"></label>
+  <button id="dl">Download views 0, 3, 6</button>
+  <button id="clear">Clear</button>
+</div>
+<div id="log"></div>
+<div id="out"></div>
+
+<script type="module">
+import * as THREE from 'three';
+import { OBJLoader } from 'three/addons/loaders/OBJLoader.js';
+
+const out = document.getElementById('out');
+const log = document.getElementById('log');
+let rendered = [];   // {name, view, url}
+
+function renderObject(obj, name) {
+  const size = +document.getElementById('size').value;
+  const elev = +document.getElementById('elev').value * Math.PI / 180;
+  const persp = document.getElementById('persp').checked;
+  const azoff = +document.getElementById('azoff').value * Math.PI / 180;
+
+  const renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
+  renderer.setSize(size, size);
+  renderer.setClearColor(0xffffff, 1);                 // white background, like IFCNet
+
+  const scene = new THREE.Scene();
+  const mat = new THREE.MeshPhongMaterial({ color: 0xcccccc, side: THREE.DoubleSide, shininess: 20 });
+  obj.traverse(c => { if (c.isMesh) { c.material = mat; c.geometry.computeVertexNormals(); } });
+  if (document.getElementById('zup').checked) obj.rotation.x = -Math.PI / 2;   // IFC is Z-up, three.js is Y-up
+  scene.add(obj);
+  obj.updateMatrixWorld(true);
+
+  // centre the object and measure it
+  const box = new THREE.Box3().setFromObject(obj);
+  obj.position.sub(box.getCenter(new THREE.Vector3()));
+  obj.updateMatrixWorld(true);
+  const r = new THREE.Box3().setFromObject(obj).getBoundingSphere(new THREE.Sphere()).radius || 1;
+
+  const cam = persp ? new THREE.PerspectiveCamera(30, 1, r * 0.01, r * 20)
+                    : new THREE.OrthographicCamera(-r, r, r, -r, r * 0.01, r * 20);
+  const dist = persp ? r / Math.sin(15 * Math.PI / 180) : r * 3;   // object fills the frame
+
+  scene.add(new THREE.AmbientLight(0xffffff, 0.45));
+  const light = new THREE.DirectionalLight(0xffffff, 0.9);
+  scene.add(light);
+
+  const row = document.createElement('div'); row.className = 'row';
+  row.innerHTML = `<b>${name}</b><br>`;
+  out.appendChild(row);
+
+  for (let v = 0; v < 12; v++) {
+    const a = azoff + v * Math.PI / 6;                 // 30 degree steps, offset to match IFCNet view 0
+    cam.position.set(dist * Math.cos(elev) * Math.sin(a), dist * Math.sin(elev), dist * Math.cos(elev) * Math.cos(a));
+    cam.lookAt(0, 0, 0);
+    cam.updateProjectionMatrix();
+    light.position.copy(cam.position);                 // headlight, like a Phong render
+    renderer.render(scene, cam);
+    const url = renderer.domElement.toDataURL('image/png');
+    rendered.push({ name, view: v, url });
+    const img = new Image(); img.src = url; img.width = 96; img.title = `view ${v}`;
+    row.appendChild(img);
+  }
+  renderer.dispose();
+}
+
+document.getElementById('file').addEventListener('change', async (e) => {
+  for (const f of e.target.files) {
+    const text = await f.text();
+    try {
+      const obj = new OBJLoader().parse(text);
+      renderObject(obj, f.name.replace(/\.obj$/i, ''));
+    } catch (err) { log.textContent += `Could not read ${f.name}: ${err}\n`; }
+  }
+  log.textContent = `${rendered.length / 12} object(s) rendered.`;
+});
+
+document.getElementById('dl').addEventListener('click', async () => {
+  for (const r of rendered.filter(r => [0, 3, 6].includes(r.view))) {
+    const a = document.createElement('a');
+    a.href = r.url; a.download = `${r.name}.${r.view}.png`;   // same naming as IFCNet: <id>.<view>.png
+    a.click();
+    await new Promise(res => setTimeout(res, 250));
+  }
+});
+document.getElementById('clear').addEventListener('click', () => { rendered = []; out.innerHTML = ''; log.textContent = ''; });
+</script>
+</body>
+</html>

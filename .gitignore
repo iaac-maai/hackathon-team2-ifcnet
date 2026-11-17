@@ -28,3 +28,7 @@ Thumbs.db
 .env
 .dev.vars
 kaggle.json
+
+#experiments
+experiments/render_test/sample*/
+experiments/render_test/renders*/
