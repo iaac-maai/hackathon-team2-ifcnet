@@ -1,0 +1,4 @@
+corruption,AUC (reconstruction),AUC (latent kNN)
+missing part,0.582,0.737
+wrong scale,0.49,0.609
+noisy export,0.542,0.601
