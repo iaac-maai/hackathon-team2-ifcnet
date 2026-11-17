@@ -4,6 +4,10 @@
 .venv/
 venv/
 
+# Python cache: rebuilt automatically, differs per machine
+__pycache__/
+*.pyc
+
 # Jupyter
 .ipynb_checkpoints/
 

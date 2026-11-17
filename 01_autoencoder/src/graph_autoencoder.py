@@ -5,6 +5,8 @@ from torch import nn
 from torch_geometric.nn import GCNConv, global_mean_pool
 from torch.utils.data import Dataset
 
+from ifc_graph import knn_edges, to_pyg_data
+
 
 class GraphAutoencoder(nn.Module):
     """Encode graph geometry and decode a fixed 1024-point reconstruction."""
