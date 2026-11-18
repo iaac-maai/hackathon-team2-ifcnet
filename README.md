@@ -28,7 +28,7 @@ The model server uses the **graph model**, because it reads the IFC file itself 
 | Model server on Render (graph model) | https://hackathon-team2-ifcnet.onrender.com |
 | Graph model on Hugging Face | https://huggingface.co/iaac-maai/hackathon-team2-ifcnet-gcn |
 | 2D model on Hugging Face (Monday) | https://huggingface.co/iaac-maai/hackathon-team2-ifcnet-ae |
-| App on Cloudflare | (Wednesday) |
+| App on Cloudflare (password) | https://hackathon-ifc-app.pages.dev |
 | Impulse-talk slides | see `impulse/LINK.md` |
 
 ## Repository structure
