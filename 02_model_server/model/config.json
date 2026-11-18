@@ -22,7 +22,7 @@
   },
   "score": "squared Chamfer distance between the first score_points input and reconstructed points",
   "score_points": 256,
-  "threshold": 0.04425114076584578,
+  "threshold": 0.05961420703679322,
   "threshold_rule": "95th percentile of the score on normal validation graphs",
   "decision": "score > threshold -> unusual",
   "anomaly_classes_used_in_eval": [

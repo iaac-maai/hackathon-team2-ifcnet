@@ -1,2 +1,4 @@
-model,params,val_cd,test_cd,roc_auc,precision,recall,knn_auc,p5,raw_p5,n_test,n_anom
-gcn_32,1745184,0.0249,0.0235,0.6087,0.2612,0.2448,0.6595,0.331,0.3843,2377,143
+model,P@5,ROC_AUC,precision,recall,threshold,baseline
+GCN,0.3777,0.5393,0.2254,0.2238,0.0394,False
+GCN + dropout 0.2,0.383,0.5356,0.2037,0.2308,0.0387,False
+Raw geometry,0.3843,,,,,True
