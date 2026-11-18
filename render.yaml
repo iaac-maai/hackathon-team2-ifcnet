@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: hackathon-team2-ifcnet
+    runtime: python
+    plan: free
+    rootDir: 02_model_server
+    buildCommand: pip install -r requirements.txt
+    startCommand: python app.py
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.7
