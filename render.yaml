@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: team2-ifc-model-server
+    name: hackathon-team2-ifcnet
     runtime: python
     plan: free
     rootDir: 02_model_server
