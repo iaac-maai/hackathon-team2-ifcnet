@@ -111,11 +111,16 @@ npm run deploy                                   # uploads public/ and functions
 
 ## Diagrams vs. the real app
 
-Diagrams are in [`diagrams/`](diagrams/): two user stories, one system diagram and the sequence diagrams.
+Two user stories (architect, IFC manager), a system diagram and a sequence diagram for each. Made in Miro.
 
-<!-- TODO: 3 to 5 lines once the Miro diagrams are exported. Candidate differences to check:
-     - no R2 in the real app (payment method), so no file storage step;
-     - the function calls /analyse (base64), not /predict (file upload);
-     - the "waking up" message appears after 5 s, before the model answers or times out;
-     - similarity search added later: the gallery lives in D1 and was built through the same Render API. -->
-*To be written once the diagrams are exported in VSCODE*
+![User stories, system and sequence diagrams](diagrams/system_and_sequence_diagrams.png)
+
+The diagrams follow the real app: one call to `/analyse` returns the score, threshold, verdict and embedding, then the website ranks the gallery in D1. What they leave out or simplify:
+
+- **"Render model" / "Shape model"** is the model server on Render (`02_model_server/`).
+- **Saving the result** is not drawn: after step 7 the function also saves one row in the D1 table `predictions`, and the page reads the last 20 rows ("Saved results").
+- **One element per file.** The app checks one IFC element at a time, so the user first exports the door or part as its own `.ifc` file.
+- **No R2.** Uploaded files are not stored (Cloudflare asks for a payment method), only the results.
+- **Waiting.** If the model server is asleep, the page shows a "waking up" message after 5 s; the diagrams show only the normal path. The failure cases are in the table above.
+- **The gallery** (370 IFCNet test elements) was built in advance with `scripts/build_gallery.py`, through the same `analyse` API.
+- **Correcting a file** (IFC manager, steps 13–16) happens outside the app; the app only rechecks the new file.
