@@ -11,15 +11,23 @@ HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 import ifc_graph                      # copy of 01_autoencoder/src/ifc_graph.py (same preprocessing)
 
-# Load model + config ONCE when the server starts
+# Load model + config ONCE when the server starts.
+# model.onnx is git-ignored, so on Render it is downloaded from our Hugging Face repo.
+MODEL_DIR = HERE / "model"
+HF_REPO = os.environ.get("HF_MODEL_REPO", "iaac-maai/hackathon-team2-ifcnet-gcn")
 for _needed in ("config.json", "model.onnx"):
-    if not (HERE / "model" / _needed).is_file():
-        sys.exit(f"Missing {HERE / 'model' / _needed}.\n"
-                 "Model files are git-ignored. Create them from the repo root with:\n"
-                 "    python 01_autoencoder/src/export_gcn_server.py\n"
-                 "(needs data/gcn_autoencoder.pt and data/ifc_graphs/), or copy them from Hugging Face.")
-CFG = json.loads((HERE / "model" / "config.json").read_text())
-SESS = ort.InferenceSession(str(HERE / "model" / CFG["model_file"]),
+    if not (MODEL_DIR / _needed).is_file():
+        try:
+            from huggingface_hub import hf_hub_download
+            hf_hub_download(HF_REPO, _needed, local_dir=MODEL_DIR)
+            print(f"downloaded {_needed} from {HF_REPO}")
+        except Exception as exc:
+            sys.exit(f"Missing {MODEL_DIR / _needed} and could not download it from {HF_REPO} ({exc}).\n"
+                     "Create it from the repo root with:\n"
+                     "    python 01_autoencoder/src/export_gcn_server.py\n"
+                     "(needs data/gcn_autoencoder.pt and data/ifc_graphs/).")
+CFG = json.loads((MODEL_DIR / "config.json").read_text())
+SESS = ort.InferenceSession(str(MODEL_DIR / CFG["model_file"]),
                             providers=["CPUExecutionProvider"])
 THR = float(CFG["threshold"])
 N = int(CFG["score_points"])
@@ -58,7 +66,7 @@ def embed(ifc_file):
     return {"latent": z.round(6).tolist(), "embedding": e.round(6).tolist()}
 
 
-examples = [[str(p)] for p in sorted((HERE / "model" / "examples").glob("*.ifc"))]
+examples = [[str(p)] for p in sorted((MODEL_DIR / "examples").glob("*.ifc"))]
 
 with gr.Blocks(title="IFC anomaly + embedding") as demo:
     gr.Markdown("# IFC element check\nUpload one IFC element (.ifc). "
