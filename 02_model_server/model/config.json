@@ -1,0 +1,37 @@
+{
+  "model_file": "model.onnx",
+  "model_name": "gcn_32",
+  "task": "anomaly detection by Chamfer reconstruction error + similarity search on the latent vector",
+  "inputs": {
+    "x": "[1024, 3] float32, normalised xyz",
+    "edge_index": "[2, 16384] int64, kNN k=16"
+  },
+  "outputs": {
+    "reconstruction": "[1, 1024, 3]",
+    "latent": "[1, 32]"
+  },
+  "preprocessing": {
+    "n_points": 1024,
+    "k_neighbours": 16,
+    "seed": 42,
+    "coordinates": "world (IfcOpenShell use-world-coords), metres",
+    "sampling": "area-weighted uniform surface sampling (trimesh.sample.sample_surface)",
+    "normalisation": "centre = mean of points, divide by max distance (unit sphere)",
+    "edges": "directed kNN, row 0 = neighbour, row 1 = point, no self-loops",
+    "ifcopenshell": "0.9.0.post1"
+  },
+  "score": "squared Chamfer distance between the first score_points input and reconstructed points",
+  "score_points": 256,
+  "threshold": 0.04425114076584578,
+  "threshold_rule": "95th percentile of the score on normal validation graphs",
+  "decision": "score > threshold -> unusual",
+  "anomaly_classes_used_in_eval": [
+    "IfcRailing",
+    "IfcStair"
+  ],
+  "built_with": {
+    "torch": "2.14.1+cpu",
+    "onnxruntime": "1.31.1",
+    "ifcopenshell": "0.9.0.post1"
+  }
+}

@@ -11,6 +11,9 @@ __pycache__/
 # Jupyter
 .ipynb_checkpoints/
 
+# Gradio cache (uploaded files, flagged data), created when app.py runs
+.gradio/
+
 # data: downloaded by the notebook, not committed
 data/*
 !data/.gitkeep

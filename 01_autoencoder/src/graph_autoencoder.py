@@ -1,8 +1,13 @@
 """Geometry-only GCN graph autoencoder for IFCNetCore graphs."""
 
+import warnings
+
 import torch
 from torch import nn
-from torch_geometric.nn import GCNConv, global_mean_pool
+
+# torch_geometric uses torch.jit.script internally; torch >= 2.10 warns about it on import. Harmless.
+warnings.filterwarnings("ignore", message=r".*torch\.jit\.script.*", category=FutureWarning)
+from torch_geometric.nn import GCNConv, global_mean_pool  # noqa: E402
 from torch.utils.data import Dataset
 
 from ifc_graph import knn_edges, to_pyg_data
@@ -67,3 +72,4 @@ class LazyGraphDataset(Dataset):
         points = self.points[i].numpy()
         edge_index = knn_edges(points, k=self.k)
         return to_pyg_data(points, edge_index, object_id=self.object_ids[i], scale=float(self.scales[i]))
+
