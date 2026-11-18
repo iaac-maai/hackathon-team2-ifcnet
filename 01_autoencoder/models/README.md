@@ -55,7 +55,7 @@ P@5: share of the 5 nearest test neighbours (cosine similarity of the L2-normali
 ![Input (top) and reconstruction (bottom)](05_reconstructions.png)
 
 ### Similarity search
-`gallery.npz` holds the latent vectors of the test images. A new element is encoded, L2-normalised and compared with the gallery by cosine similarity; the 5 closest are returned.
+`gallery.npz` holds the latent vectors of 20 normal elements per class (360 in total). A new element is encoded, L2-normalised and compared with the gallery by cosine similarity; the 5 closest are returned.
 
 ![Query and 5 nearest elements](06_similarity.png)
 
@@ -96,4 +96,4 @@ print(gallery.files)   # see the keys: embeddings, labels, ...
 ```
 
 ## Credits
-Team 2 (Bars Babila, Samiha Abeda Nur, Emmanuel Marquez, Karthikeyan Seravanan), AI Methods I hackathon, IAAC MaAI 2026/27. Faculty: Salvador Cantuarias Brañes and Serjoscha Düring.
+Team 2 (Bars Babila, Samiha Abeda Nur, Emmanuel Marquez, Karthikeyan Saravanan), AI Methods I hackathon, IAAC MaAI 2026/27. Faculty: Salvador Cantuarias Brañes and Serjoscha Düring.
