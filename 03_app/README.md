@@ -92,4 +92,4 @@ Diagrams are in [`diagrams/`](diagrams/): two user stories, one system diagram a
      - no R2 in the real app (payment method), so no file storage step;
      - the function calls /analyse (base64), not /predict (file upload);
      - the "waking up" message appears after 5 s, before the model answers or times out. -->
-*To be written once the diagrams are exported.*
+*To be written once the diagrams are exported in VSCODE*
