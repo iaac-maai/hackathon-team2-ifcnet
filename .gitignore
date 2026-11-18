@@ -39,4 +39,4 @@ kaggle.json
 
 #experiments
 experiments/render_test/sample*/
-experiments/render_test/renders*/
+experiments/render_test/renders*/01_autoencoder/model/examples/
