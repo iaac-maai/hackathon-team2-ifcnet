@@ -1,0 +1,37 @@
+{
+  "model_file": "model.onnx",
+  "model_name": "GCN graph autoencoder (data/gcn_autoencoder.pt)",
+  "inputs": {
+    "x": "[1024, 3] float32, normalised xyz of the points",
+    "edge_index": "[2, 16384] int64, kNN edges (16 neighbours)"
+  },
+  "outputs": {
+    "reconstruction": "[1, 1024, 3]",
+    "latent": "[1, 32]"
+  },
+  "preprocessing": {
+    "function": "ifc_graph.ifc_to_graph(path)",
+    "n_points": 1024,
+    "k_neighbours": 16,
+    "seed": 42,
+    "notes": "IFC -> mesh in world coordinates -> sample points -> centre + scale -> kNN graph"
+  },
+  "score": "Chamfer distance between reconstruction and input points (first 256 points)",
+  "score_points": 256,
+  "threshold": 0.03939566481858488,
+  "threshold_rule": "95th percentile of the score on normal validation objects",
+  "decision": "score > threshold -> 'unusual object, check it'",
+  "anomaly_classes_used_in_eval": [
+    "IfcStair",
+    "IfcRailing"
+  ],
+  "built_with": {
+    "python": "3.12.16",
+    "torch": "2.14.1+cpu",
+    "torch_geometric": "2.8.1",
+    "ifcopenshell": "0.9.0.post1",
+    "onnxruntime": "1.31.1",
+    "gradio": "6.32.0",
+    "numpy": "2.5.3"
+  }
+}
