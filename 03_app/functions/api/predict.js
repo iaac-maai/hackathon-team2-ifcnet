@@ -1,5 +1,6 @@
 // POST /api/predict with a form field "ifc" (one .ifc file):
-// 1. send it to the model server, 2. store the result in D1, 3. answer the page.
+// 1. send it to the model server, 2. store the result in D1,
+// 3. find the 5 most similar elements of the gallery (D1 table `gallery`), 4. answer the page.
 // No R2: Cloudflare asks for a payment method to enable it, so the file itself is not stored.
 
 const MAX_BYTES = 5 * 1024 * 1024; // 5 MB: 95% of the IFCNet elements are under 200 KB
@@ -47,7 +48,10 @@ export async function onRequestPost({ request, env }) {
     .bind(id, createdAt, file.name || null, result.score, result.threshold, result.unusual ? 1 : 0)
     .run();
 
-  // 3. Answer the page (the embedding is not needed by the page, so it is left out)
+  // 3. The 5 most similar elements of the gallery (table filled by scripts/build_gallery.py)
+  const { similar, galleryWarning } = await mostSimilar(env, result);
+
+  // 4. Answer the page (the embedding itself is not stored or sent)
   return Response.json({
     id,
     created_at: createdAt,
@@ -55,7 +59,40 @@ export async function onRequestPost({ request, env }) {
     score: result.score,
     threshold: result.threshold,
     unusual: result.unusual,
+    similar,
+    gallery_warning: galleryWarning,
   });
+}
+
+// Cosine similarity = dot product, because both embeddings are L2-normalised (length 1)
+async function mostSimilar(env, result, k = 5) {
+  if (!Array.isArray(result.embedding)) return { similar: [], galleryWarning: "The model sent no embedding." };
+  let rows;
+  try {
+    ({ results: rows } = await env.DB.prepare(
+      "SELECT ifc_class, file_name, threshold, embedding FROM gallery",
+    ).all());
+  } catch {
+    return { similar: [], galleryWarning: "The similarity gallery is not loaded." };
+  }
+  if (!rows.length) return { similar: [], galleryWarning: "The similarity gallery is empty." };
+
+  const query = result.embedding;
+  const similar = rows
+    .map((row) => {
+      const vector = JSON.parse(row.embedding);
+      let dot = 0;
+      for (let i = 0; i < query.length; i++) dot += query[i] * vector[i];
+      return { ifc_class: row.ifc_class, file_name: row.file_name, similarity: Math.round(dot * 1000) / 1000 };
+    })
+    .sort((a, b) => b.similarity - a.similarity)
+    .slice(0, k);
+
+  // The gallery stores the threshold of the model that made it: a different one means a newer model
+  const galleryWarning = Math.abs(rows[0].threshold - result.threshold) > 1e-6
+    ? "The gallery was made with another model version: run scripts/build_gallery.py again."
+    : null;
+  return { similar, galleryWarning };
 }
 
 // The model server answered with an error message (not a timeout or a sleeping server)
@@ -72,8 +109,9 @@ async function callModel(env, ifcBase64) {
   if (!started.ok) throw new Error(`Model server answered ${started.status}`);
   const { event_id } = await started.json();
 
-  // Reading the IFC geometry can take a while on Render's free CPU: wait up to 90 s
-  const stream = await fetchWithTimeout(`${base}/${event_id}`, {}, 90000);
+  // Reading the IFC geometry can take a while on Render's free CPU. The server gives up after 120 s
+  // with its own error message, so we wait a bit longer (130 s) to show that message, not "waking up".
+  const stream = await fetchWithTimeout(`${base}/${event_id}`, {}, 130000);
   const text = await stream.text(); // "event: complete\ndata: [ {...} ]"  or  "event: error\ndata: {...}"
 
   const failed = text.split("event: error")[1];

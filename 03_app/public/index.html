@@ -27,6 +27,16 @@
           <p id="score"></p>
         </div>
       </div>
+      <div id="similar-box" hidden>
+        <h3>Most similar elements</h3>
+        <p>From a gallery of IFCNet test elements, compared by the model's 32-number embedding (1 = same shape).
+          The IFC class is shown only to read the result: the model never sees it.</p>
+        <table>
+          <thead><tr><th>#</th><th>IFC class</th><th>Similarity</th><th>File</th></tr></thead>
+          <tbody id="similar"></tbody>
+        </table>
+        <p id="gallery-warning" class="waking"></p>
+      </div>
     </section>
 
     <section class="card">
@@ -50,6 +60,7 @@
       if (!file) return;
       document.getElementById("send").disabled = true;
       document.getElementById("result").hidden = true;
+      document.getElementById("similar-box").hidden = true;
       statusLine.className = "";
       statusLine.textContent = "Sending to the model…";
       // A normal answer takes a few seconds; if it takes longer, the free Render server is probably asleep
@@ -77,6 +88,7 @@
         document.getElementById("score").textContent =
           `Score ${result.score.toFixed(4)} · threshold ${result.threshold.toFixed(4)} (${ratio.toFixed(2)}× the threshold)`;
         document.getElementById("result").hidden = false;
+        showSimilar(result.similar || [], result.gallery_warning);
         statusLine.className = "";
         statusLine.textContent = "Saved.";
         loadHistory();
@@ -88,6 +100,22 @@
         document.getElementById("send").disabled = false;
       }
     });
+
+    function showSimilar(similar, warning) {
+      const tbody = document.getElementById("similar");
+      tbody.innerHTML = "";
+      similar.forEach((item, i) => {
+        const tr = document.createElement("tr");
+        for (const value of [i + 1, item.ifc_class, item.similarity.toFixed(3), item.file_name]) {
+          const td = document.createElement("td");
+          td.textContent = value;
+          tr.appendChild(td);
+        }
+        tbody.appendChild(tr);
+      });
+      document.getElementById("gallery-warning").textContent = warning || "";
+      document.getElementById("similar-box").hidden = !similar.length && !warning;
+    }
 
     async function loadHistory() {
       const response = await fetch("/api/history");
