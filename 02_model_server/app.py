@@ -1,7 +1,9 @@
+import base64
 import hashlib
 import json
 import os
 import sys
+import tempfile
 import threading
 from pathlib import Path
 
@@ -88,6 +90,27 @@ def embed(ifc_file):
     return {"latent": z.round(6).tolist(), "embedding": e.round(6).tolist()}
 
 
+# ---- For programs (Cloudflare app): base64 text in, JSON out -----------------
+# HTTP requests carry text, so the web app sends the .ifc file as base64 (the same
+# pattern as the course example). One call returns everything the app needs.
+def analyse_b64(ifc_b64: str) -> dict:
+    """Score one IFC element. Send the .ifc file as base64 text ('data:...;base64,' prefix allowed).
+    Returns score, threshold, unusual and the L2-normalised embedding (32 numbers)."""
+    if not ifc_b64:
+        raise gr.Error("Send an .ifc file as base64 text.")
+    if "," in ifc_b64[:100]:
+        ifc_b64 = ifc_b64.split(",", 1)[1]
+    with tempfile.NamedTemporaryFile(suffix=".ifc", delete=False) as f:
+        f.write(base64.b64decode(ifc_b64))
+        path = f.name
+    try:
+        result = predict(path)
+        result["embedding"] = embed(path)["embedding"]
+        return result
+    finally:
+        os.unlink(path)
+
+
 examples = [[str(p)] for p in sorted((MODEL_DIR / "examples").glob("*.ifc"))]
 
 with gr.Blocks(title="IFC anomaly + embedding") as demo:
@@ -100,6 +123,7 @@ with gr.Blocks(title="IFC anomaly + embedding") as demo:
     out = gr.JSON(label="Result")
     b1.click(predict, f, out, api_name="predict")
     b2.click(embed, f, out, api_name="embed")
+    gr.api(analyse_b64, api_name="analyse")   # for the Cloudflare app
     if examples:
         gr.Examples(examples, inputs=f)
 
