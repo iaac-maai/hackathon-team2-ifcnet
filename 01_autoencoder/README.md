@@ -9,7 +9,7 @@ We tried three inputs for the same task. The full comparison is in [`CONCLUSION.
 |---|---|---|---|---|
 | [`autoencoder.ipynb`](notebook/autoencoder.ipynb) | 2D renders, 64 x 64 greyscale | conv_64 | **0.891** | **0.534** |
 | [`pointcloud.ipynb`](notebook/pointcloud.ipynb) | 3D point cloud, 1,024 points | pn_64 | 0.586 (kNN 0.739) | 0.465 |
-| [`ifcautoencoder.ipynb`](notebook/ifcautoencoder.ipynb) | IFC geometry as a graph (1,024 points + 16-NN edges) | gcn_32 | 0.609 (kNN 0.660) | 0.331 |
+| [`ifcautoencoder.ipynb`](notebook/ifcautoencoder.ipynb) | IFC geometry as a graph (1,024 points + 16-NN edges) | gcn_32 | 0.534 | 0.386 |
 
 ![All models compared](figures/summary_all_models.png)
 
@@ -66,7 +66,7 @@ PointNet autoencoder on 1,024 points per element (IFCNet PLY), Chamfer loss, lat
 Each IFC file becomes a graph: IfcOpenShell mesh → 1,024 surface points → unit sphere → each point linked to its 16 nearest points. Only geometry goes into the model, never the IFC class, name or properties. Code: [`src/ifc_graph.py`](src/ifc_graph.py), model: [`src/graph_autoencoder.py`](src/graph_autoencoder.py).
 
 - **Model:** 3 graph convolution layers (`GCNConv`, no convolutional layers on images), mean pooling, 32-number latent vector, MLP decoder; 1,745,184 parameters; Chamfer loss; 30 epochs on CPU.
-- **Results** ([`comparison_graph.csv`](comparison_graph.csv)): ROC AUC 0.609 (kNN 0.660), precision 0.261, recall 0.245, P@5 0.331, below the raw-coordinate baseline (0.384).
+- **Results** ([`comparison_graph.csv`](comparison_graph.csv)): ROC AUC 0.534, precision 0.231, recall 0.217, P@5 0.386, just above the raw-coordinate baseline (0.380).
 - **Why weak:** mean pooling over 1,024 points blurs the shape into one vector, and the MLP decoder cannot rebuild details.
 
 ![IFC elements as graphs](figures/ifc_03_graphs.png)

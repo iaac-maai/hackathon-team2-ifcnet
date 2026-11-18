@@ -18,7 +18,7 @@ We built it three ways and compared them (see [`01_autoencoder/CONCLUSION.md`](0
 |---|---|---|
 | 2D renders of the element | convolutional autoencoder | 0.89 |
 | 3D point cloud | PointNet autoencoder | 0.59 |
-| **IFC geometry as a graph** | **graph (GCN) autoencoder** | 0.61 |
+| **IFC geometry as a graph** | **graph (GCN) autoencoder** | 0.53 |
 
 The model server uses the **graph model**, because it reads the IFC file itself instead of a picture of it. It is our first version and still the weakest on the numbers; the 2D model stays on Hugging Face as the best-scoring reference.
 

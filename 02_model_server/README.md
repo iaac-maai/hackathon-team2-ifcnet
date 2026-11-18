@@ -31,7 +31,7 @@ The model server for our IFC graph autoencoder. Upload **one IFC element** (`.if
 
 | Endpoint | Input | Output |
 |---|---|---|
-| `/predict` | one `.ifc` file | `{"score": 0.004052, "threshold": 0.044251, "unusual": false}` |
+| `/predict` | one `.ifc` file | `{"score": <number>, "threshold": 0.039336, "unusual": false}` |
 | `/embed` | one `.ifc` file | `{"latent": [32 numbers], "embedding": [32 numbers, L2-normalised]}` |
 
 Use `embedding` for similarity search (cosine similarity = dot product of two embeddings).
@@ -80,6 +80,6 @@ On Windows, `GRADIO_SHARE=0` stops Gradio from creating a public `*.gradio.live`
 
 ## Limits
 
-- The model is a first version: anomaly ROC AUC 0.61 on unseen stairs and railings (see the [model card](https://huggingface.co/iaac-maai/hackathon-team2-ifcnet-gcn) and `01_autoencoder/CONCLUSION.md`). Treat the verdict as a hint, not a check.
+- The model is a first version: anomaly ROC AUC 0.53 on unseen stairs and railings (see the [model card](https://huggingface.co/iaac-maai/hackathon-team2-ifcnet-gcn) and `01_autoencoder/CONCLUSION.md`). Treat the verdict as a hint, not a check.
 - One element per file. A whole building model is not split into elements yet.
 - Element size is removed during preprocessing, so a wrongly scaled element can still look normal.

@@ -28,9 +28,9 @@ All use the same idea for the verdict: threshold = 95th percentile of the score 
 | 3D point cloud | pn_64 | 1,783,104 | 0.586 (kNN: 0.739) | 0.268 | 0.308 | 0.465 |
 | 3D point cloud | pn_16 | 1,758,480 | 0.585 (kNN: 0.742) | 0.260 | 0.308 | 0.466 |
 | 3D point cloud | pn_128 | 1,815,936 | 0.584 (kNN: 0.735) | 0.247 | 0.280 | 0.467 |
-| IFC graph | gcn_32 | 1,745,184 | 0.609 (kNN: 0.660) | 0.261 | 0.245 | 0.331 |
+| IFC graph | gcn_32 | 1,745,184 | 0.534 | 0.231 | 0.217 | 0.386 |
 
-Baselines for P@5: random 0.06 · raw pixels 0.504 (2D) · raw coordinates 0.384 (graph points).
+Baselines for P@5: random 0.06 · raw pixels 0.504 (2D) · raw coordinates 0.380 (graph points).
 "kNN" = alternative anomaly score: mean cosine distance of the latent vector to its 5 nearest normal training objects.
 Sources: [comparison.csv](comparison.csv), [comparison_3d.csv](comparison_3d.csv), [comparison_graph.csv](comparison_graph.csv).
 
@@ -61,18 +61,20 @@ The anomaly score separates normal objects from stairs and railings well.
 ![IFC graphs](figures/ifc_03_graphs.png)
 
 - The data pipeline works: 7,927 of 7,930 IFC files converted (99.96 %), 98.5 % of graphs in one piece, and only geometry goes into the model (no class, name or properties).
-- The GCN autoencoder is the weakest model: anomaly AUC 0.61, recall 0.24, and P@5 0.33, **below** the raw-coordinate baseline (0.38). Mean pooling over 1,024 points with three GCN layers gives a blurry latent vector, and the MLP decoder cannot rebuild detailed shapes.
-- Values come from the best saved checkpoint (`data/gcn_autoencoder.pt`, 30 epochs on CPU, Chamfer loss on 256 points). Its Chamfer values use a different setup from PointNet's, so only AUC and P@5 are compared across models.
+- The GCN autoencoder is the weakest model for anomalies: AUC 0.53 (close to chance) and recall 0.22. For similarity, P@5 0.386 is only just above the raw-coordinate baseline (0.380). Mean pooling over 1,024 points with three GCN layers gives a blurry latent vector, and the MLP decoder cannot rebuild detailed shapes.
+- Values come from the final retrained checkpoint (`data/gcn_autoencoder.pt`, Chamfer loss on 256 points), the same model that runs on the server and on Hugging Face (threshold 0.0393). The ONNX export matches PyTorch (max difference about 5e-7). Its Chamfer values use a different setup from PointNet's, so only AUC and P@5 are compared across models.
 
 ## Which model worked best
 
 **conv_64, the convolutional autoencoder on 2D renders.** It wins on every measure:
 
-- **Anomaly detection:** ROC AUC **0.89** and it finds **63 %** of the unseen stairs and railings, against 0.58 to 0.61 for the 3D models.
-- **Similarity:** P@5 **0.53**, the highest of all models (3D: 0.47, graph: 0.33).
+- **Anomaly detection:** ROC AUC **0.89** and it finds **63 %** of the unseen stairs and railings, against 0.53 to 0.59 for the 3D models.
+- **Similarity:** P@5 **0.53**, the highest of all models (3D: 0.47, graph: 0.39).
 - **Small and fast:** 593 k parameters (3 to 7 times fewer than the others), trained in about 2.5 minutes on a CPU, exports to ONNX.
 
-That is why the model app ([model_app/](model_app/)) and the Hugging Face model use conv_64.
+conv_64 stays on Hugging Face as our best-scoring reference ([iaac-maai/hackathon-team2-ifcnet-ae](https://huggingface.co/iaac-maai/hackathon-team2-ifcnet-ae)).
+
+**The model server uses gcn_32** ([iaac-maai/hackathon-team2-ifcnet-gcn](https://huggingface.co/iaac-maai/hackathon-team2-ifcnet-gcn)), because it reads the IFC file itself instead of a rendered picture, which is what a BIM tool needs. It is weaker on the numbers, so its verdict is a hint, not a check.
 
 ## Summary
 

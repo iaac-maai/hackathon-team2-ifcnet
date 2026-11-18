@@ -61,7 +61,7 @@ The exact preprocessing settings are stored in `config.json`. Use the same code 
 ## Anomaly score and threshold
 
 - **Score:** squared Chamfer distance between the input points and the reconstruction (first 256 points).
-- **Threshold:** 0.044251, the 95th percentile of the score on **normal validation** elements.
+- **Threshold:** 0.039336, the 95th percentile of the score on **normal validation** elements.
 - **Decision:** score > threshold → `unusual`.
 
 ## Data
@@ -80,17 +80,17 @@ IFCNet has no licence stated. It is used for non-commercial academic coursework 
 |---|---|---|---|---|---|
 | 2D renders | conv_64 (CNN) | **0.891** | **0.467** | **0.627** | **0.534** |
 | 3D point cloud | PointNet AE (pn_64) | 0.586 (kNN 0.739) | 0.268 | 0.308 | 0.465 |
-| **IFC graph** | **GCN AE (this model)** | **0.609** (kNN 0.660) | **0.261** | **0.245** | **0.331** |
+| **IFC graph** | **GCN AE (this model)** | **0.534** | **0.231** | **0.217** | **0.386** |
 
 - **kNN** = alternative anomaly score: mean cosine distance of the latent vector to its 5 nearest normal training elements.
-- **P@5** = share of the 5 most similar elements (by latent vector) that have the same IFC class. Baselines: random 0.06; raw point coordinates 0.384.
+- **P@5** = share of the 5 most similar elements (by latent vector) that have the same IFC class. Baselines: random 0.06; raw point coordinates 0.380.
 
 ![All models compared](summary_all_models.png)
 
 **What this means.** The graph model works end to end on real IFC geometry, but in this first version it is the **weakest** of our three approaches:
 
-- Anomaly detection is only a little better than chance (AUC 0.61), and it finds 24 % of the unseen stairs and railings.
-- Similarity search (P@5 0.33) is **below** the raw-coordinate baseline (0.38): the latent vector does not yet capture shape better than the raw points.
+- Anomaly detection is only a little better than chance (AUC 0.53), and it finds 22 % of the unseen stairs and railings.
+- Similarity search (P@5 0.386) is only just above the raw-coordinate baseline (0.380): the latent vector captures shape about as well as the raw points, not better.
 - Likely reasons: mean pooling over 1,024 points blurs the shape into one vector, the MLP decoder cannot rebuild fine details, and training was short (30 CPU epochs).
 
 ## How to use
