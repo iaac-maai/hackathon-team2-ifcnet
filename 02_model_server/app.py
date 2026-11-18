@@ -1,6 +1,8 @@
+import hashlib
 import json
 import os
 import sys
+import threading
 from pathlib import Path
 
 import gradio as gr
@@ -38,20 +40,40 @@ def chamfer(a, b):
     return float(d.min(1).mean() + d.min(0).mean())
 
 
+# One converter process for the whole server life (started at launch, reused for
+# every request). Starting a fresh Python process per request re-imports
+# IfcOpenShell and trimesh each time, which takes 20-40 s on Render's free CPU.
+# The lock keeps Predict and Embed from using the worker at the same time.
+CONVERTER = ifc_graph.SafeConverter(timeout=120)
+CONVERTER_LOCK = threading.Lock()
+_CACHE = {}          # file hash -> (recon, latent, points); Embed after Predict is instant
+
+
+def _file_hash(path):
+    return hashlib.sha256(Path(path).read_bytes()).hexdigest()
+
+
 def run(ifc_path):
     """IFC file -> graph (P1's code) -> ONNX -> (reconstruction, latent, input points)."""
     if not ifc_path:
         raise gr.Error("Please upload an .ifc file first.")
+    key = _file_hash(ifc_path)
+    if key in _CACHE:
+        return _CACHE[key]
     # Convert in a separate process: some IFC files crash IfcOpenShell's C++ engine,
-    # which would otherwise kill the whole server.
-    with ifc_graph.SafeConverter(timeout=120) as converter:
-        status, pts, _ = converter.convert(Path(ifc_path))
+    # which would otherwise kill the whole server. If it crashes, a new worker starts.
+    with CONVERTER_LOCK:
+        status, pts, _ = CONVERTER.convert(Path(ifc_path))
     if status != "ok":
         raise gr.Error(f"Could not read the IFC geometry ({status}): {pts}")
     pts = pts.astype(np.float32)
     edge_index = ifc_graph.knn_edges(pts).astype(np.int64)
     recon, z = SESS.run(None, {"x": pts, "edge_index": edge_index})
-    return recon.reshape(-1, 3), z[0], pts
+    result = (recon.reshape(-1, 3), z[0], pts)
+    if len(_CACHE) > 64:
+        _CACHE.clear()
+    _CACHE[key] = result
+    return result
 
 
 def predict(ifc_file):
@@ -82,6 +104,8 @@ with gr.Blocks(title="IFC anomaly + embedding") as demo:
         gr.Examples(examples, inputs=f)
 
 if __name__ == "__main__":
+    # Start the converter worker now, so the first request does not pay the start-up time.
+    CONVERTER._start()
     # Public *.gradio.live link when run on your own computer.
     # Turned off on hosting platforms (Render, Hugging Face Spaces), which already give a public URL.
     # Override with GRADIO_SHARE=0 or GRADIO_SHARE=1.
