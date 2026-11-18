@@ -56,7 +56,7 @@ The exact preprocessing settings are stored in `config.json`. Use the same code 
 - **Decoder:** MLP (32 → 256 → 512 → 1,024 × 3) that outputs 1,024 points.
 - **Parameters:** 1,745,184.
 - **Loss:** symmetric squared Chamfer distance (computed on a fixed subset of 256 points to keep CPU memory low).
-- **Training:** 30 epochs on CPU, normal classes only; the best checkpoint is chosen by validation Chamfer distance.
+- **Training:** trained on CPU, normal classes only; the best checkpoint is chosen by validation Chamfer distance.
 
 ## Anomaly score and threshold
 
@@ -91,7 +91,7 @@ IFCNet has no licence stated. It is used for non-commercial academic coursework 
 
 - Anomaly detection is only a little better than chance (AUC 0.53), and it finds 22 % of the unseen stairs and railings.
 - Similarity search (P@5 0.386) is only just above the raw-coordinate baseline (0.380): the latent vector captures shape about as well as the raw points, not better.
-- Likely reasons: mean pooling over 1,024 points blurs the shape into one vector, the MLP decoder cannot rebuild fine details, and training was short (30 CPU epochs).
+- Likely reasons: mean pooling over 1,024 points blurs the shape into one vector, the MLP decoder cannot rebuild fine details, and training was short (CPU only).
 
 ## How to use
 
