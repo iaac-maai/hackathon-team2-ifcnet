@@ -1,7 +1,7 @@
 {
   "model_file": "model.onnx",
   "model_name": "conv_64",
-  "task": "anomaly detection by reconstruction error",
+  "task": "anomaly detection by reconstruction error + similarity search on the latent vector",
   "input": {
     "name": "image",
     "shape": [
@@ -59,5 +59,14 @@
     "precision": 0.467,
     "recall": 0.627,
     "test_mse": 0.00056
+  },
+  "similarity": {
+    "gallery_file": "gallery.npz",
+    "embedding": "latent output, L2-normalised: e = z / ||z||",
+    "metric": "cosine similarity = dot product of embeddings",
+    "top_k": 5,
+    "precision_at_5_test": 0.534,
+    "baseline_raw_pixels": 0.504,
+    "chance": 0.063
   }
 }

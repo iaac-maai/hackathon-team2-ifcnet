@@ -5,8 +5,15 @@ __pycache__/
 .venv/
 venv/
 
+# Python cache: rebuilt automatically, differs per machine
+__pycache__/
+*.pyc
+
 # Jupyter
 .ipynb_checkpoints/
+
+# Gradio cache (uploaded files, flagged data), created when app.py runs
+.gradio/
 
 # data: downloaded by the notebook, not committed
 data/*

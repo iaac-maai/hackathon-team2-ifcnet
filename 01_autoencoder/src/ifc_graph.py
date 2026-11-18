@@ -230,7 +230,10 @@ def to_pyg_data(points, edge_index, object_id=None, scale=None):
     - ``object_id`` and ``scale``: information only, never model inputs.
       The IFC class is deliberately NOT stored here; it lives in the split file.
     """
+    import warnings
     import torch
+    # torch_geometric uses torch.jit.script internally; torch >= 2.10 warns about it on import. Harmless.
+    warnings.filterwarnings("ignore", message=r".*torch\.jit\.script.*", category=FutureWarning)
     from torch_geometric.data import Data
 
     pos = torch.from_numpy(points)
