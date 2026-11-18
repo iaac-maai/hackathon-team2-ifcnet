@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>IFC element check</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <main>
+    <header>
+      <h1>IFC element check</h1>
+      <p>Upload one IFC element (.ifc). Our graph autoencoder rebuilds its shape: if the rebuilt shape is far from the original
+        (score above the threshold), the element is <strong>unusual</strong>. Only the geometry is used, never the IFC class or name.</p>
+    </header>
+
+    <section class="card">
+      <form id="upload">
+        <input id="ifc" name="ifc" type="file" accept=".ifc" required>
+        <button id="send" type="submit">Analyse</button>
+      </form>
+      <p id="status"></p>
+      <div id="result" class="result" hidden>
+        <div>
+          <div id="verdict" class="verdict"></div>
+          <p id="file"></p>
+          <p id="score"></p>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Saved results</h2>
+      <p>Stored in the D1 database: they are still here after a reload.</p>
+      <table>
+        <thead><tr><th>When (UTC)</th><th>File</th><th>Score</th><th>Threshold</th><th>Verdict</th></tr></thead>
+        <tbody id="history"></tbody>
+      </table>
+    </section>
+  </main>
+
+  <script>
+    const form = document.getElementById("upload");
+    const statusLine = document.getElementById("status");
+    const WAKING = "The model server is waking up. This takes about a minute, please wait…";
+
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      const file = document.getElementById("ifc").files[0];
+      if (!file) return;
+      document.getElementById("send").disabled = true;
+      document.getElementById("result").hidden = true;
+      statusLine.className = "";
+      statusLine.textContent = "Sending to the model…";
+      // A normal answer takes a few seconds; if it takes longer, the free Render server is probably asleep
+      const wakingTimer = setTimeout(() => {
+        statusLine.className = "waking";
+        statusLine.textContent = WAKING;
+      }, 5000);
+
+      try {
+        const body = new FormData();
+        body.append("ifc", file);
+        const response = await fetch("/api/predict", { method: "POST", body });
+        const result = await response.json();
+        if (!response.ok) {
+          const error = new Error(result.error || response.statusText);
+          error.waking = result.waking;
+          throw error;
+        }
+
+        const verdict = document.getElementById("verdict");
+        verdict.textContent = result.unusual ? "Unusual" : "Normal";
+        verdict.className = "verdict " + (result.unusual ? "anomaly" : "normal");
+        document.getElementById("file").textContent = result.file_name;
+        const ratio = result.score / result.threshold;
+        document.getElementById("score").textContent =
+          `Score ${result.score.toFixed(4)} · threshold ${result.threshold.toFixed(4)} (${ratio.toFixed(2)}× the threshold)`;
+        document.getElementById("result").hidden = false;
+        statusLine.className = "";
+        statusLine.textContent = "Saved.";
+        loadHistory();
+      } catch (error) {
+        statusLine.className = error.waking ? "waking" : "error";
+        statusLine.textContent = error.message;
+      } finally {
+        clearTimeout(wakingTimer);
+        document.getElementById("send").disabled = false;
+      }
+    });
+
+    async function loadHistory() {
+      const response = await fetch("/api/history");
+      if (!response.ok) return;
+      const rows = await response.json();
+      const tbody = document.getElementById("history");
+      tbody.innerHTML = "";
+      for (const row of rows) {
+        const tr = document.createElement("tr");
+        const cells = [
+          row.created_at.replace("T", " ").slice(0, 19),
+          row.file_name || "",
+          row.score.toFixed(4),
+          row.threshold.toFixed(4),
+          row.is_anomaly ? "Unusual" : "Normal",
+        ];
+        for (const value of cells) {
+          const td = document.createElement("td");
+          td.textContent = value;   // textContent: a file name can't inject HTML
+          tr.appendChild(td);
+        }
+        tbody.appendChild(tr);
+      }
+    }
+
+    loadHistory();
+  </script>
+</body>
+</html>

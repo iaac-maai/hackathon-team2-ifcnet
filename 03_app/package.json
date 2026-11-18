@@ -1,0 +1,14 @@
+{
+  "name": "hackathon-ifc-app",
+  "private": true,
+  "description": "Team 2 hackathon: a password-protected page that sends an IFC file to our model server and stores the results in D1",
+  "scripts": {
+    "db:local": "wrangler d1 execute hackathon-ifc-db --local --file=schema.sql",
+    "db:remote": "wrangler d1 execute hackathon-ifc-db --remote --file=schema.sql",
+    "dev": "wrangler pages dev",
+    "deploy": "wrangler pages deploy"
+  },
+  "devDependencies": {
+    "wrangler": "4.156.1"
+  }
+}
