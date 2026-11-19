@@ -104,11 +104,13 @@ class ModelError extends Error {}
 // Gradio's HTTP API has two steps: start a job, then read its result
 async function callModel(env, ifcBase64) {
   const base = `${env.MODEL_URL}/gradio_api/call/${env.MODEL_API_NAME}`;
+  // A sleeping Render server needs one to two minutes to wake up (83 s and 95 s measured on 19 Nov),
+  // so the first call waits up to 120 s: one try is usually enough.
   const started = await fetchWithTimeout(base, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ data: [ifcBase64] }),
-  });
+  }, 120000);
   if (!started.ok) throw new Error(`Model server answered ${started.status}`);
   const { event_id } = await started.json();
 

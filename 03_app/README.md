@@ -59,7 +59,7 @@ Tables:
 
 | Situation | What the app does | Where |
 |---|---|---|
-| **The model server is asleep** (Render free plan sleeps after 15 min) | After 5 s the page shows *"The model server is waking up. This takes about a minute"*. If there is still no answer, the function stops waiting (60 s to start, 130 s for the result) and the page says to try again in a minute. *Tested on 19 Nov with a sleeping server: the message appeared, and a second try about a minute later gave the result.* | `index.html`, `predict.js` |
+| **The model server is asleep** (Render free plan sleeps after 15 min) | After 5 s the page shows *"The model server is waking up. This takes about a minute"*. If there is still no answer, the function stops waiting (120 s to start, enough for Render's wake-up of 83 to 95 s measured on 19 Nov; 130 s for the result) and the page says to try again in a minute. *Tested on 19 Nov with a sleeping server: the message appeared, and a second try about a minute later gave the result.* | `index.html`, `predict.js` |
 | **The IFC geometry cannot be read** | The model server answers with an error; the app shows *"The model could not read this IFC file"* (422). Nothing is saved. | `predict.js` |
 | **A very heavy IFC** (e.g. detailed sanitary terminals) | The server gives up after 120 s with its own error. The function waits 130 s, so the user sees that error (422), not "waking up". | `predict.js` |
 | **The gallery is missing, empty or from another model** | The verdict still works; a note replaces or follows the similar elements. | `predict.js` |
