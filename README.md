@@ -31,6 +31,12 @@ The model server uses the **graph model**, because it reads the IFC file itself 
 | App on Cloudflare (password) | https://hackathon-ifc-app.pages.dev |
 | Impulse-talk slides | see `impulse/LINK.md` |
 
+## Where we stand
+
+- **Clear:** Our app works end to end on real IFC geometry. You upload one element, a graph autoencoder on Render gives a score and a Normal / Unusual verdict, the website finds the 5 most similar elements, and the result is saved in D1 behind a password.
+- **Unclear:** Whether the score really means "unusual". On unseen stairs and railings the AUC is only 0.53, close to chance, and similar shapes are often from another IFC class (P@5 0.39). The score seems to measure how complex an element is more than how unusual it is. Our 2D image model scores much better (AUC 0.89), but it cannot read the IFC file directly.
+- **Next:** A stronger graph encoder (for example EdgeConv) and longer GPU training, keeping the real size of the element, and splitting a whole building model into elements, so an architect can check a full project instead of one element per file.
+
 ## Repository structure
 ```
 ├── 01_autoencoder/       # Monday: data, notebooks (2D, point cloud, IFC graph), models, results
