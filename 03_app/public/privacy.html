@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Privacy · IFC Check</title>
+  <meta name="description" content="What this research prototype stores, what it does not, and who can see it.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:wght@600;700&display=swap">
+  <link rel="stylesheet" href="/app.css">
+  <style>
+    /* Page-only styles: a shorter hero and one readable text column */
+    .privacy-page .hero { padding-bottom: 88px; }
+    .privacy-page .hero-text { display: block; max-width: 720px; padding-top: 28px; }
+    .privacy-page .hero-text h1 { white-space: normal; }
+    .privacy-page .hero-text p { margin-top: 10px; font-size: 15px; }
+    .privacy-page .topbar .pill-link { display: inline-flex; }
+    .doc {
+      position: relative; z-index: 1;
+      max-width: 720px; margin: -56px auto 48px;
+      padding: 32px 36px;
+      font-size: 15.5px; line-height: 1.65;
+    }
+    .doc section + section { margin-top: 26px; padding-top: 22px; border-top: 1px solid var(--line); }
+    .doc h2 { font-size: 20px; line-height: 1.25; margin-bottom: 8px; }
+    .doc p { margin: 0 0 10px; }
+    .doc ul { margin: 0 0 10px; padding-left: 20px; }
+    .doc li { margin: 4px 0; }
+    .doc li::marker { color: var(--sage); }
+    .doc code { font-size: .92em; background: var(--surface-2); border: 1px solid var(--line); border-radius: 6px; padding: 1px 6px; }
+    .doc .callout { margin: 10px 0 0; padding: 12px 14px; border-radius: 14px; background: rgba(181, 86, 46, .08); color: var(--ink); }
+    .doc .callout strong { color: var(--rust); }
+    .doc .back { display: inline-block; margin-top: 28px; color: var(--sage-deep); font-weight: 600; text-decoration: none; }
+    .doc .back:hover { color: var(--forest); text-decoration: underline; }
+    @media (max-width: 720px) {
+      .doc { padding: 24px 20px; margin-top: -48px; }
+      .privacy-page .hero { padding-bottom: 76px; }
+    }
+  </style>
+</head>
+<body class="privacy-page">
+  <div class="hero">
+    <header class="topbar">
+      <a class="brand" href="/" aria-label="IFC Check, home">
+        <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span class="brand-name">IFC Check</span>
+      </a>
+      <span class="tag label">Graph autoencoder · research prototype</span>
+      <div class="topbar-right">
+        <a class="pill pill-link" href="/">← Back to the app</a>
+      </div>
+    </header>
+    <section class="hero-text">
+      <h1>Privacy</h1>
+      <p>What this research prototype stores, what it does not, and who can see it.</p>
+    </section>
+  </div>
+
+  <main>
+    <article class="doc card">
+      <section>
+        <h2>What we store</h2>
+        <p>Each analysis adds one row to a Cloudflare D1 database (table <code>predictions</code>). A row holds:</p>
+        <ul>
+          <li>a random id</li>
+          <li>the date and time (UTC)</li>
+          <li>the file name</li>
+          <li>the anomaly score</li>
+          <li>the threshold</li>
+          <li>the verdict (normal / unusual)</li>
+        </ul>
+        <p>Nothing else.</p>
+      </section>
+
+      <section>
+        <h2>What we do not store</h2>
+        <ul>
+          <li>The uploaded IFC file itself (there is no file storage; R2 is not used).</li>
+          <li>Its geometry or its embedding.</li>
+          <li>Names of people, e-mail addresses or accounts. There are no user accounts.</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>The model server (Render)</h2>
+        <p>Your file is sent once to our model server. It is written to a temporary file for the analysis and deleted right after.</p>
+        <p>The server keeps the computed result in memory for a short time, so it can answer repeated requests faster.
+          This memory is cleared when the server restarts, or when it goes to sleep after 15 minutes without use.</p>
+        <p>The server is not password protected, but it stores nothing on disk.</p>
+      </section>
+
+      <section>
+        <h2>Who can see results</h2>
+        <p>Everyone who knows the team password sees the "Saved results" list, including file names.</p>
+        <p class="callout"><strong>Do not upload files whose names or contents are confidential.</strong></p>
+      </section>
+
+      <section>
+        <h2>Usage statistics</h2>
+        <p>We use Cloudflare Web Analytics to count visits: page views, country, browser and device type, and page load time.
+          It uses no cookies and does not identify you. We only see totals. It does not see your files or results.</p>
+      </section>
+
+      <section>
+        <h2>Cookies</h2>
+        <p>One login cookie, which holds a hash of the team password, not the password. No tracking cookies.</p>
+      </section>
+
+      <section>
+        <h2>Third parties</h2>
+        <ul>
+          <li>Fonts are loaded from Google Fonts and the 3D library (three.js) from the jsDelivr CDN, so these services see your IP address when the page loads.</li>
+          <li>Cloudflare and Render, which host the app, may keep standard technical request logs.</li>
+          <li>The model files on Hugging Face contain no user data.</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>How long</h2>
+        <p>Saved results stay until the end of the course (November 2026 hackathon, IAAC MaAI). Then the database is deleted.</p>
+        <p>Want a row removed earlier? Ask IAAC MaAI Team 2 through the course.</p>
+      </section>
+
+      <section>
+        <h2>Who</h2>
+        <p>IAAC MaAI 2026/27, AI Methods I hackathon, Team 2: Bars Babila, Samiha Abeda Nur, Emmanuel Marquez, Karthikeyan Saravanan.</p>
+        <p>This is a research prototype for coursework, not a commercial service.</p>
+      </section>
+
+      <a class="back" href="/">← Back to the app</a>
+    </article>
+  </main>
+
+  <footer class="footer">
+    <span class="brand-name small">IFC Check</span>
+    <span class="label">Hackathon team 2</span>
+    <nav>
+      <a href="/">Back to the app</a>
+      <a href="https://huggingface.co/iaac-maai/hackathon-team2-ifcnet-gcn" target="_blank" rel="noopener">Model on Hugging Face ↗</a>
+      <a href="https://github.com/iaac-maai/hackathon-team2-ifcnet" target="_blank" rel="noopener">Code on GitHub ↗</a>
+    </nav>
+  </footer>
+</body>
+</html>
