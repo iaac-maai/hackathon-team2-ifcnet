@@ -45,3 +45,6 @@ experiments/render_test/renders*/01_autoencoder/model/examples/
 01_autoencoder/model/examples/
 experiments/render_test/renders/
 experiments/render_test/renders_stairs/
+
+03_app/public/examples/
+03_app/public/gallery_points.json
