@@ -17,6 +17,10 @@ let galleryPoints = null;      // { file_name: [[x,y,z] x256] }, loaded lazily
 let galleryPromise = null;
 let stage = null;              // 3D stage API (null until three.js is loaded, or if it failed)
 let thumbs = null;             // shared offscreen renderer for shelf + similar thumbnails
+let lastFile = null;           // the File behind lastResult (upload or example), parsed again by web-ifc for "Model"
+let modelJob = null;           // { result, promise -> mesh data | null }
+let ifcBroken = false;         // web-ifc could not be loaded at all: no "Model" view this session
+const NEVER_SEEN = new Set(["IfcStair", "IfcRailing"]); // classes left out of training
 
 // ---------------------------------------------------------------- small helpers
 const easeInOutCubic = (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
@@ -125,7 +129,7 @@ async function analyse(file) {
       error.waking = result.waking;
       throw error;
     }
-    showResult(result);
+    showResult(result, file);
     statusLine.className = "status";
     statusLine.textContent = "Saved.";
     setPill("ready", "Ready");
@@ -168,8 +172,9 @@ function clearResult() {
   if (stage) stage.clearResult();
 }
 
-function showResult(result) {
+function showResult(result, file) {
   lastResult = result;
+  if (file) lastFile = file;
   const card = $("verdict-card");
   card.classList.remove("is-empty", "pop");
   void card.offsetWidth; // restart the entry animation
@@ -186,8 +191,10 @@ function showResult(result) {
   // 3D view (only if the model server sent the points; older servers send null)
   if (stage) {
     if (result.points && result.reconstruction) {
-      try { stage.showResult(result.points, result.reconstruction); }
+      const withModel = !ifcBroken && !!lastFile;
+      try { stage.showResult(result.points, result.reconstruction, { model: withModel }); }
       catch (e) { console.error(e); stage.message("The 3D view could not draw this result."); }
+      if (withModel) loadModel(result, lastFile); // async, never awaited: verdict and history don't wait for it
     } else {
       stage.message("This answer has no 3D points (older model server).");
     }
@@ -212,6 +219,180 @@ function animateGauge(score, threshold) {
     $("m-score").textContent = (score * p).toFixed(4);
     $("m-threshold").textContent = (threshold * p).toFixed(4);
     $("m-ratio").textContent = (ratio * p).toFixed(2) + "×";
+  });
+}
+
+// ---------------------------------------------------------------- real 3D model (web-ifc, loaded lazily)
+// The IFC is parsed a second time, in the browser, only to draw its real surfaces. Nothing here touches the verdict.
+const IFC_BASE = "https://cdn.jsdelivr.net/npm/web-ifc@0.0.57/";
+let ifcApiPromise = null;
+
+function ensureIfcApi() {
+  if (!ifcApiPromise) {
+    ifcApiPromise = (async () => {
+      const WebIFC = await import(IFC_BASE + "web-ifc-api.js");
+      const api = new WebIFC.IfcAPI();
+      api.SetWasmPath(IFC_BASE, true); // web-ifc.wasm from the same pinned folder
+      await api.Init();
+      if (!api.wasmModule) throw new Error("web-ifc wasm did not start");
+      // Products that are not the element's body: their geometry is ignored
+      const skip = new Set([WebIFC.IFCOPENINGELEMENT, WebIFC.IFCOPENINGSTANDARDCASE, WebIFC.IFCVIRTUALELEMENT,
+        WebIFC.IFCSPACE, WebIFC.IFCANNOTATION, WebIFC.IFCGRID].filter((t) => t !== undefined));
+      return { api, skip };
+    })().catch((e) => { ifcBroken = true; throw e; });
+  }
+  return ifcApiPromise;
+}
+
+// IFC file -> { pos, nor, idx } in OUR frame: z up, centred and scaled into the unit sphere like the server's points
+async function ifcMesh(file, points) {
+  const { api, skip } = await ensureIfcApi();
+  const bytes = new Uint8Array(await file.arrayBuffer());
+  const id = api.OpenModel(bytes);
+  if (id < 0) throw new Error("web-ifc could not open the file");
+  const pieces = []; // one per placed geometry: { product, type, pos, nor, idx, area, dims }
+  try {
+    api.StreamAllMeshes(id, (mesh) => {
+      const product = mesh.expressID;
+      let type;
+      try { type = api.GetLineType(id, product); } catch { type = undefined; }
+      const placed = mesh.geometries;
+      for (let i = 0; i < placed.size(); i++) {
+        const pg = placed.get(i);
+        const g = api.GetGeometry(id, pg.geometryExpressID);
+        const v = api.GetVertexArray(g.GetVertexData(), g.GetVertexDataSize()); // x y z nx ny nz per vertex
+        const ix = api.GetIndexArray(g.GetIndexData(), g.GetIndexDataSize());
+        const m = pg.flatTransformation; // column-major 4x4, placement included, web-ifc's y-up frame
+        const pos = [], nor = [], idx = Array.from(ix); // copied now: web-ifc frees its buffers after the callback
+        for (let k = 0; k + 5 < v.length; k += 6) {
+          const x = v[k], y = v[k + 1], z = v[k + 2];
+          const X = m[0] * x + m[4] * y + m[8] * z + m[12];
+          const Y = m[1] * x + m[5] * y + m[9] * z + m[13];
+          const Z = m[2] * x + m[6] * y + m[10] * z + m[14];
+          pos.push(X, -Z, Y); // y-up -> z-up (inverse of web-ifc's (x, y, z) -> (x, z, -y))
+          const a = v[k + 3], b = v[k + 4], c = v[k + 5];
+          const NX = m[0] * a + m[4] * b + m[8] * c;
+          const NY = m[1] * a + m[5] * b + m[9] * c;
+          const NZ = m[2] * a + m[6] * b + m[10] * c;
+          const l = Math.hypot(NX, NY, NZ) || 1;
+          nor.push(NX / l, -NZ / l, NY / l);
+        }
+        if (g.delete) g.delete();
+        if (idx.length >= 3) pieces.push({ product, type, pos, nor, idx, area: triArea(pos, idx), dims: bboxDims(pos) });
+      }
+    });
+  } finally {
+    api.CloseModel(id);
+  }
+
+  // 1. Drop degenerate pieces: (almost) zero area, or a bounding box that is a line (two dims < 1% of the third)
+  const maxArea = Math.max(0, ...pieces.map((p) => p.area));
+  const solid = pieces.filter((p) => {
+    const [d0, d1, d2] = [...p.dims].sort((a, b) => a - b);
+    return p.area > maxArea * 1e-4 && !(d0 < 0.01 * d2 && d1 < 0.01 * d2);
+  });
+  // 2. Keep only the main product: not an opening / virtual element / space / annotation / grid,
+  //    and if several remain, the one with the largest triangle area
+  const byProduct = new Map();
+  for (const p of solid) {
+    if (skip.has(p.type)) continue;
+    const e = byProduct.get(p.product) || { area: 0, pieces: [] };
+    e.area += p.area; e.pieces.push(p);
+    byProduct.set(p.product, e);
+  }
+  const main = [...byProduct.values()].sort((a, b) => b.area - a.area)[0];
+  if (!main) throw new Error("no body geometry in this IFC");
+  if (pieces.length !== main.pieces.length) {
+    console.info(`Model view: kept ${main.pieces.length} of ${pieces.length} streamed meshes (main product only, degenerate ones dropped).`);
+  }
+  const pos = [], nor = [], idx = [];
+  for (const p of main.pieces) {
+    const base = pos.length / 3;
+    for (let k = 0; k < p.pos.length; k++) { pos.push(p.pos[k]); nor.push(p.nor[k]); }
+    for (let k = 0; k < p.idx.length; k++) idx.push(base + p.idx[k]);
+  }
+
+  // 3. Same normalisation as the server: the server centres on the MEAN of points sampled uniformly over the
+  //    surface (= the area-weighted centroid of the triangles) and divides by the largest distance to it.
+  let area = 0, cx = 0, cy = 0, cz = 0;
+  for (let t = 0; t + 2 < idx.length; t += 3) {
+    const a = idx[t] * 3, b = idx[t + 1] * 3, c = idx[t + 2] * 3;
+    const w = triW(pos, a, b, c);
+    area += w;
+    cx += w * (pos[a] + pos[b] + pos[c]) / 3;
+    cy += w * (pos[a + 1] + pos[b + 1] + pos[c + 1]) / 3;
+    cz += w * (pos[a + 2] + pos[b + 2] + pos[c + 2]) / 3;
+  }
+  if (!(area > 0)) throw new Error("mesh has zero surface area");
+  cx /= area; cy /= area; cz /= area;
+  let r = 0;
+  for (let i = 0; i < idx.length; i++) {
+    const p = idx[i] * 3;
+    r = Math.max(r, Math.hypot(pos[p] - cx, pos[p + 1] - cy, pos[p + 2] - cz));
+  }
+  if (!(r > 0)) throw new Error("degenerate mesh");
+  const out = new Float32Array(pos.length);
+  for (let i = 0; i < pos.length; i += 3) {
+    out[i] = (pos[i] - cx) / r; out[i + 1] = (pos[i + 1] - cy) / r; out[i + 2] = (pos[i + 2] - cz) / r;
+  }
+
+  // 4. Safety net: if the mesh box and the server points' box disagree by > 15% on any axis (size or centre),
+  //    the browser read the file differently from the server: don't show a mesh that would not line up
+  if (points && points.length) {
+    const pf = toF32(points);
+    const mb = bbox(out), pb = bbox(pf);
+    const pMax = Math.max(...pb.size);
+    const off = [0, 1, 2].some((k) => {
+      const ref = Math.max(pb.size[k], 0.05 * pMax); // nearly flat axes: compare against 5% of the largest one
+      return Math.abs(mb.size[k] - pb.size[k]) > 0.15 * ref
+          || Math.abs(mb.centre[k] - pb.centre[k]) > 0.15 * ref;
+    });
+    if (off) {
+      const r3 = (a) => a.map((v) => +v.toFixed(3));
+      console.info("Model view: mesh box does not match the points box (> 15%); model preview skipped for this file.",
+        { meshSize: r3(mb.size), pointsSize: r3(pb.size), meshCentre: r3(mb.centre), pointsCentre: r3(pb.centre) });
+      throw new Error("mesh does not line up with the server points");
+    }
+  }
+  return { pos: out, nor: new Float32Array(nor), idx: new Uint32Array(idx) };
+}
+
+function triW(pos, a, b, c) {
+  const ux = pos[b] - pos[a], uy = pos[b + 1] - pos[a + 1], uz = pos[b + 2] - pos[a + 2];
+  const vx = pos[c] - pos[a], vy = pos[c + 1] - pos[a + 1], vz = pos[c + 2] - pos[a + 2];
+  return Math.hypot(uy * vz - uz * vy, uz * vx - ux * vz, ux * vy - uy * vx) / 2;
+}
+function triArea(pos, idx) {
+  let s = 0;
+  for (let t = 0; t + 2 < idx.length; t += 3) s += triW(pos, idx[t] * 3, idx[t + 1] * 3, idx[t + 2] * 3);
+  return s;
+}
+function bbox(pos) {
+  const lo = [Infinity, Infinity, Infinity], hi = [-Infinity, -Infinity, -Infinity];
+  for (let i = 0; i + 2 < pos.length; i += 3) for (let k = 0; k < 3; k++) {
+    const v = pos[i + k];
+    if (v < lo[k]) lo[k] = v;
+    if (v > hi[k]) hi[k] = v;
+  }
+  return { size: [0, 1, 2].map((k) => hi[k] - lo[k]), centre: [0, 1, 2].map((k) => (hi[k] + lo[k]) / 2) };
+}
+function bboxDims(pos) { return bbox(pos).size; }
+
+function loadModel(result, file) {
+  if (!modelJob || modelJob.result !== result) {
+    modelJob = {
+      result,
+      promise: ifcMesh(file, result.points).catch((e) => { console.warn("Model view unavailable:", e); return null; }),
+    };
+  }
+  modelJob.promise.then((data) => {
+    if (lastResult !== result || !stage || !stage.hasResult()) return; // a newer result took over
+    try {
+      if (data) stage.setModel(data); else stage.modelFailed();
+    } catch (e) {
+      console.warn("Model view could not be drawn:", e);
+      stage.modelFailed();
+    }
   });
 }
 
@@ -355,6 +536,9 @@ async function loadExamples() {
     label.append(el("span", "label", String(ex.label || "IFC element")),
                  el("span", "label", `${ex.points.length} points`));
     book.append(canvas, el("span", "book-num", String(i + 1).padStart(2, "0")), label);
+    const unseen = NEVER_SEEN.has(String(ex.label));
+    book.dataset.seen = unseen ? "unseen" : "seen";
+    if (unseen) book.append(el("span", "book-tag", "Never seen"));
     if (!REDUCED) {
       book.addEventListener("pointermove", (e) => {
         const r = book.getBoundingClientRect();
@@ -374,6 +558,17 @@ async function loadExamples() {
   });
   if (thumbs) attachShelfThumbs();
 }
+
+// Filter chips: only toggle `hidden`; hidden cards leave the viewport, so the shared thumbnail renderer skips them
+document.querySelectorAll("[data-filter]").forEach((chip) => chip.addEventListener("click", () => {
+  const f = chip.dataset.filter;
+  document.querySelectorAll("[data-filter]").forEach((c) => {
+    c.classList.toggle("is-on", c === chip);
+    c.setAttribute("aria-pressed", String(c === chip));
+  });
+  $("shelf").querySelectorAll(".book").forEach((book) => { book.hidden = f !== "all" && book.dataset.seen !== f; });
+  $("shelf").scrollLeft = 0;
+}));
 
 function attachShelfThumbs() {
   $("shelf").querySelectorAll(".book").forEach((book, i) => {
@@ -614,12 +809,33 @@ function createStage(THREE, OrbitControls) {
   glow.visible = false; // only under a result
   scene.add(glow);
 
+  // Real model: solid light-sage faces + sage-deep feature edges, soft lights (only the Model view shows it)
+  const hemi = new THREE.HemisphereLight(0xFFFFFF, 0xC9D2CA, 1.9);
+  hemi.position.set(0, 0, 1); // sky from +z (z is up)
+  scene.add(hemi);
+  const key = new THREE.DirectionalLight(0xFFFFFF, 1.5);
+  key.position.set(1.2, 1.6, 0.4); // relative to the camera: the light turns with the view, like a head lamp
+  camera.add(key);
+  scene.add(camera);
+  const meshMat = new THREE.MeshStandardMaterial({
+    color: 0xE3EAE4, roughness: 0.92, metalness: 0, side: THREE.DoubleSide,
+    polygonOffset: true, polygonOffsetFactor: 1.5, polygonOffsetUnits: 2, // faces sit just behind edges and points
+  });
+  const edgeMat = new THREE.LineBasicMaterial({ color: 0x3E5A49, transparent: true, opacity: 0.85 });
+  const modelGroup = new THREE.Group();
+  modelGroup.visible = false;
+  scene.add(modelGroup);
+  let modelState = "none";       // none | loading | ready | failed
+  let modelFadeToken = 0;
+  let showModelPts = true;
+
   const A = new Cloud(THREE);   // your element
   const B = new Cloud(THREE);   // the reconstruction
   const C = new Cloud(THREE);   // compare: a gallery element
   for (const c of [A, B]) { c.obj.layers.set(1); scene.add(c.obj); }
   C.obj.layers.set(2); scene.add(C.obj);
   B.opacity(0, 0); C.opacity(0, 0);
+  A.obj.renderOrder = 2; // points over the model faces
 
   let sizeMul = 1;
   let sphere = { c: [0, 0, 0], r: 1, minZ: -0.6 };
@@ -669,7 +885,64 @@ function createStage(THREE, OrbitControls) {
   function caption(main, sub) { $("cap-main").textContent = main; $("cap-sub").textContent = sub || ""; }
 
   // ----- result
-  function showResult(points, recon) {
+  // ----- real model
+  function clearModel() {
+    modelFadeToken++;
+    for (const child of modelGroup.children.slice()) { child.geometry.dispose(); modelGroup.remove(child); }
+    modelGroup.visible = false;
+  }
+
+  function setModel(data) {
+    if (!R) return;
+    clearModel();
+    const geo = new THREE.BufferGeometry();
+    geo.setAttribute("position", new THREE.BufferAttribute(data.pos, 3));
+    geo.setAttribute("normal", new THREE.BufferAttribute(data.nor, 3));
+    geo.setIndex(new THREE.BufferAttribute(data.idx, 1));
+    const mesh = new THREE.Mesh(geo, meshMat);
+    const edges = new THREE.LineSegments(new THREE.EdgesGeometry(geo, 28), edgeMat);
+    for (const o of [mesh, edges]) { o.layers.set(1); modelGroup.add(o); }
+    modelState = "ready";
+    document.querySelector('[data-view="model"]').hidden = false;
+    if (view === "model") setView("model", { fadeModel: true });
+  }
+
+  // Small persistent note under the stage caption (this result only; removed by the next result or clear)
+  function modelNote(text) {
+    let note = $("cap-note");
+    if (!text) { if (note) note.remove(); return; }
+    if (!note) {
+      note = el("span");
+      note.id = "cap-note";
+      note.style.cssText = "font-size:11.5px;line-height:1.4;color:var(--muted);font-style:italic";
+      document.querySelector(".stage-caption").append(note);
+    }
+    note.textContent = text;
+  }
+
+  function modelFailed() {
+    clearModel();
+    modelState = "failed";
+    const b = document.querySelector('[data-view="model"]');
+    b.hidden = true; b.classList.remove("is-on");
+    if (view === "model") setView("element");
+    modelNote("3D model preview not available for this file");
+  }
+
+  function fadeModelIn() {
+    const my = ++modelFadeToken;
+    meshMat.transparent = true;
+    meshMat.needsUpdate = true;
+    tween(650, (p) => {
+      if (my !== modelFadeToken) return;
+      meshMat.opacity = p; edgeMat.opacity = 0.85 * p;
+    }).then(() => {
+      if (my !== modelFadeToken) return;
+      meshMat.transparent = false; meshMat.opacity = 1; meshMat.needsUpdate = true;
+    });
+  }
+
+  function showResult(points, recon, opts = {}) {
     if (msgEl) { msgEl.remove(); msgEl = null; }
     const inp = toF32(points), rec = toF32(recon);
     const n = inp.length / 3, m = rec.length / 3;
@@ -699,18 +972,25 @@ function createStage(THREE, OrbitControls) {
     stageEl.classList.add("has-result");
     glow.visible = true;
     document.querySelectorAll("[data-view]").forEach((b) => { if (b.dataset.view !== "compare") b.disabled = false; });
+    clearModel();
+    modelNote("");
+    modelState = opts.model ? "loading" : "none";
+    document.querySelector('[data-view="model"]').hidden = !opts.model;
     updateCompareButton();
     fit(sphereOf(inp), true);
-    setView("rebuild", { intro: true });
+    view = null;
+    setView(opts.model ? "model" : "element", { intro: true }); // Model is the default; Element if web-ifc is out
   }
 
   function clearResult() {
     if (msgEl) { msgEl.remove(); msgEl = null; }
     if (!R) { stageEl.classList.remove("has-result"); return; }
     R = null; compare = null; view = null; token++;
+    clearModel(); modelNote(""); modelState = "none"; A.sizeK = 1;
     stageEl.classList.remove("has-result", "side-by-side");
     document.querySelectorAll("[data-view]").forEach((b) => { b.disabled = true; b.classList.remove("is-on"); });
     $("compare-mode").hidden = true; $("legend").hidden = true; $("replay").hidden = true; $("cmp-labels").hidden = true;
+    $("modelpts").hidden = true;
     caption("", "");
     B.opacity(0, 300); C.opacity(0, 300);
     A.opacity(0, 300);
@@ -739,6 +1019,11 @@ function createStage(THREE, OrbitControls) {
     $("legend").hidden = next !== "fails";
     $("replay").hidden = next !== "rebuild";
     $("cmp-labels").hidden = next !== "compare";
+    $("modelpts").hidden = next !== "model";
+    const isModel = next === "model";
+    const wasModelShown = modelGroup.visible;
+    modelGroup.visible = isModel && modelState === "ready";
+    A.sizeK = isModel ? 0.6 : 1; // smaller dots on top of the surfaces
     const side = next === "compare" && cmode === "side";
     stageEl.classList.toggle("side-by-side", side);
     if (side !== lastSide) {   // half-width viewports need the camera further back (and back again after)
@@ -750,9 +1035,20 @@ function createStage(THREE, OrbitControls) {
     }
     const white = fillColor(R.n, EL_COL);
 
-    if (next === "element") {
+    if (opts.intro && (next === "element" || next === "model")) A.set(scatterFrom(R.inp, sphereOf(R.inp)), white);
+
+    if (next === "model") {
+      const ready = modelState === "ready";
+      B.opacity(0, 300); C.opacity(0, 300);
+      A.opacity(!ready || showModelPts ? 1 : 0, 400);
+      A.flow(R.inp, white, opts.intro ? 1300 : 900);
+      if (ready && (opts.fadeModel || !wasModelShown)) fadeModelIn();
+      caption(ready ? "Model · real geometry" : "Model · reading the IFC…", ready
+        ? `The element's own surfaces, read from the IFC in your browser.${showModelPts ? ` Green dots: the ${R.n} points the model sees.` : ""}`
+        : "Building the real 3D model in your browser. Meanwhile: the points the model sees.");
+    } else if (next === "element") {
       A.opacity(1, 400); B.opacity(0, 300); C.opacity(0, 300);
-      A.flow(R.inp, white, 900);
+      A.flow(R.inp, white, opts.intro ? 1300 : 900);
       caption(`Your element · ${R.n} points`, "Points taken from the surface of your element: this is what the model sees.");
     } else if (next === "rebuild") {
       playRebuild(my, opts.intro, white);
@@ -810,6 +1106,13 @@ function createStage(THREE, OrbitControls) {
     if (view === "compare") setView("compare");
   }));
   $("replay").addEventListener("click", () => setView("rebuild"));
+  const mp = $("modelpts");
+  mp.addEventListener("click", () => {
+    showModelPts = !showModelPts;
+    mp.classList.toggle("is-on", showModelPts);
+    mp.setAttribute("aria-pressed", String(showModelPts));
+    if (view === "model") setView("model");
+  });
   const rot = $("autorotate");
   const setRot = (on) => { autoRotateOn = on; rot.classList.toggle("is-on", on); rot.setAttribute("aria-pressed", String(on)); };
   setRot(!REDUCED);
@@ -830,7 +1133,7 @@ function createStage(THREE, OrbitControls) {
     for (const c of [A, B, C]) {
       const u = c.mat.uniforms;
       u.uScale.value = scale;
-      u.uSize.value = 0.05 * sizeMul;
+      u.uSize.value = 0.05 * sizeMul * (c.sizeK || 1);
       u.uNear.value = camDist - sphere.r;
       u.uFar.value = camDist + sphere.r * 1.2;
     }
@@ -856,7 +1159,7 @@ function createStage(THREE, OrbitControls) {
     }
   }
 
-  return { render, showResult, clearResult, message, setView, setCompare, hasResult: () => !!R };
+  return { render, showResult, clearResult, message, setView, setCompare, setModel, modelFailed, hasResult: () => !!R };
 }
 
 // ---------------------------------------------------------------- 3D: ONE shared renderer for all small cards

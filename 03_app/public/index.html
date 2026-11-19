@@ -87,6 +87,7 @@
         <div id="stage-canvas" class="stage-canvas"></div>
 
         <div class="toolbar toolbar-top" role="toolbar" aria-label="3D views">
+          <button class="tb" data-view="model" disabled>Model</button>
           <button class="tb" data-view="element" disabled>Element</button>
           <button class="tb" data-view="rebuild" disabled>Rebuild</button>
           <button class="tb" data-view="overlay" disabled>Overlay</button>
@@ -122,6 +123,7 @@
 
         <div class="toolbar toolbar-bottom" role="toolbar" aria-label="Stage controls">
           <button id="replay" class="tb" hidden>↻ Replay</button>
+          <button id="modelpts" class="tb is-on" aria-pressed="true" hidden>Show model points</button>
           <button id="autorotate" class="tb is-on" aria-pressed="true">Auto-rotate</button>
           <button id="resetview" class="tb">Reset view</button>
           <label class="slider">Size <input id="psize" type="range" min="0.5" max="2.2" step="0.05" value="1"></label>
@@ -146,7 +148,13 @@
           <div class="label">Examples</div>
           <h2>Try an element from the shelf</h2>
         </div>
-        <p class="note">Real IFCNet elements. Click one to send it through the same analysis.</p>
+        <p class="note">Real IFCNet elements, one from each class. Stairs and railings were never shown to the model
+          during training. Click one to send it through the same analysis.</p>
+      </div>
+      <div id="shelf-filter" class="filter" role="group" aria-label="Filter examples">
+        <button type="button" class="fchip is-on" data-filter="all" aria-pressed="true">All</button>
+        <button type="button" class="fchip" data-filter="seen" aria-pressed="false">Seen in training</button>
+        <button type="button" class="fchip" data-filter="unseen" aria-pressed="false">Never seen (stair, railing)</button>
       </div>
       <div id="shelf" class="shelf"></div>
     </section>

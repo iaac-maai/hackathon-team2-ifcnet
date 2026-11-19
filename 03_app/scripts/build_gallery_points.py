@@ -1,4 +1,4 @@
-"""Build browser point previews and twelve local IFC examples.
+"""Build browser point previews and 22 local IFC examples (one per class + an extra stair and railing).
 
 Run from the repository root after installing the model server's Python dependencies:
     python 03_app/scripts/build_gallery_points.py
@@ -56,8 +56,9 @@ def main():
     public = APP / "public"
     (public / "gallery_points.json").write_text(json.dumps(points_by_file, separators=(",", ":")), encoding="utf-8")
 
-    # Pick one converted example from each of eight ordinary classes, plus two
-    # stairs and two railings. Selection is repeatable and never fabricates data.
+    # Pick one converted example from EACH class, plus one extra stair and one
+    # extra railing (the two classes never seen in training), so 20 + 2 = 22.
+    # Selection is repeatable (seed 42) and only uses files that converted.
     candidates: dict[str, list[str]] = {}
     for ifc_class, file_name in rows:
         if file_name in points_by_file:
@@ -65,26 +66,23 @@ def main():
     rng = random.Random(42)
     chosen: list[str] = []
     special_counts = {"IfcStair": 2, "IfcRailing": 2}
-    for ifc_class in ("IfcStair", "IfcRailing"):
+    target = 22
+    # Seen-in-training classes first (alphabetical), the never-seen ones last
+    order = [name for name in sorted(candidates) if name not in special_counts] + list(special_counts)
+    for ifc_class in order:
         pool = sorted(set(candidates.get(ifc_class, [])))
         rng.shuffle(pool)
-        chosen.extend(pool[:special_counts[ifc_class]])
-    ordinary = [name for name in sorted(candidates) if name not in special_counts]
-    rng.shuffle(ordinary)
-    for ifc_class in ordinary:
-        pool = sorted(set(candidates[ifc_class]))
-        rng.shuffle(pool)
-        if pool:
-            chosen.append(pool[0])
-        if len(chosen) >= 12:
-            break
-    if len(chosen) < 12:
-        print(f"Only {len(chosen)} examples could be selected; 12 converted examples with the requested class mix were not available.")
+        take = special_counts.get(ifc_class, 1)
+        if len(pool) < take:
+            print(f"Only {len(pool)} converted file(s) for {ifc_class}; wanted {take}.")
+        chosen.extend(pool[:take])
+    if len(chosen) < target:
+        print(f"Only {len(chosen)} examples could be selected; {target} converted examples with the requested class mix were not available.")
 
     examples_dir = public / "examples"
     examples_dir.mkdir(parents=True, exist_ok=True)
     examples = []
-    for file_name in chosen[:12]:
+    for file_name in chosen[:target]:
         shutil.copy2(source_map[file_name], examples_dir / file_name)
         examples.append({"file": file_name, "label": classes_by_file[file_name], "points": points_by_file[file_name]})
     (examples_dir / "examples.json").write_text(json.dumps(examples, separators=(",", ":")), encoding="utf-8")
