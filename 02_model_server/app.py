@@ -95,7 +95,8 @@ def embed(ifc_file):
 # pattern as the course example). One call returns everything the app needs.
 def analyse_b64(ifc_b64: str) -> dict:
     """Score one IFC element. Send the .ifc file as base64 text ('data:...;base64,' prefix allowed).
-    Returns score, threshold, unusual and the L2-normalised embedding (32 numbers)."""
+    Returns score, threshold, unusual, the L2-normalised embedding (32 numbers), and, for the
+    3D view in the app, the input points and the reconstruction (256 x [x, y, z] each, normalised)."""
     if not ifc_b64:
         raise gr.Error("Send an .ifc file as base64 text.")
     if "," in ifc_b64[:100]:
@@ -106,6 +107,11 @@ def analyse_b64(ifc_b64: str) -> dict:
     try:
         result = predict(path)
         result["embedding"] = embed(path)["embedding"]
+        recon, _, pts = run(path)          # cached: no extra work
+        # Only the first N (256) points: the model was trained and is scored on these;
+        # the other reconstructed points carry no shape (they sit at the centre).
+        result["points"] = np.round(pts[:N].astype(float), 3).tolist()   # float64: short JSON numbers
+        result["reconstruction"] = np.round(recon[:N].astype(float), 3).tolist()
         return result
     finally:
         os.unlink(path)
