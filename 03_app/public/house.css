@@ -1,0 +1,75 @@
+/* IFC Check: "Whole-model check" section (house.js). Uses the palette variables from app.css. */
+
+.house-section {
+  position: relative; z-index: 1;
+  margin-top: -76px;                 /* floats over the bottom of the hero, like the workspace did */
+  display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: 16px;
+  height: clamp(520px, 64vh, 720px);
+}
+/* heading between the house and the single-element workspace (only when the house is shown) */
+.house-break { margin: 72px 0 20px; }
+.house-section[hidden] + .house-break { display: none; }
+.house-section:not([hidden]) + .house-break + .workspace { margin-top: 0; }   /* the workspace no longer overlaps the hero */
+
+.house-stage {
+  position: relative; min-width: 0; border-radius: var(--r); overflow: hidden;
+  background: radial-gradient(70% 60% at 50% 45%, rgba(255,255,255,.8), rgba(255,255,255,0) 70%), var(--mist);
+  border: 1px solid rgba(255,255,255,.8); box-shadow: var(--shadow-lift);
+}
+.house-canvas { position: absolute; inset: 0; }
+.house-canvas canvas { display: block; width: 100%; height: 100%; cursor: grab; }
+.house-head { position: absolute; left: 20px; top: 18px; z-index: 1; pointer-events: none; max-width: 60%; }
+.house-head h2 { font-size: clamp(20px, 1.8vw, 26px); line-height: 1.1; margin-top: 4px; }
+.house-head p { margin: 6px 0 0; color: var(--muted); font-size: 13px; }
+.house-tools { position: absolute; left: 50%; bottom: 14px; transform: translateX(-50%); z-index: 2; }
+.house-tip {
+  position: absolute; z-index: 3; pointer-events: none; white-space: nowrap;
+  padding: 6px 10px; border-radius: 10px; font: 500 12.5px/1.2 var(--sans);
+  background: rgba(255,255,255,.92); border: 1px solid var(--line); box-shadow: var(--shadow); color: var(--ink);
+}
+.house-legend { position: absolute; right: 16px; top: 16px; z-index: 1; padding: 10px 12px; border-radius: 14px; display: flex; flex-direction: column; gap: 5px; font-size: 12px; }
+.house-legend span { display: flex; align-items: center; gap: 8px; }
+.house-legend i { width: 12px; height: 12px; border-radius: 4px; display: inline-block; }
+
+.house-panel { padding: 20px; display: flex; flex-direction: column; gap: 12px; overflow-y: auto; min-height: 0; }
+.house-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.house-stats div { background: var(--surface-2); border-radius: 12px; padding: 8px 10px; }
+.house-stats b { display: block; font: 700 22px/1.1 var(--head); font-variant-numeric: tabular-nums; }
+.house-stats .u b { color: var(--rust); }
+.house-stats .b b { color: #9A6F1E; }
+.house-flagged { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+.hflag {
+  width: 100%; display: grid; grid-template-columns: 12px 1fr auto; gap: 10px; align-items: center;
+  padding: 9px 12px; border-radius: 12px; cursor: pointer; text-align: left;
+  background: rgba(255,255,255,.78); border: 1px solid var(--line); transition: background .2s, border-color .2s, transform .2s;
+}
+.hflag:hover { background: #fff; transform: translateX(-2px); }
+.hflag.is-active { border-color: var(--sage-deep); box-shadow: 0 0 0 3px rgba(62,90,73,.14); background: #fff; }
+.hdot { width: 10px; height: 10px; border-radius: 50%; }
+.hdot.unusual { background: #CF7650; } .hdot.border { background: #E3C27A; } .hdot.normal { background: #D6E1D9; }
+.hname { font-size: 13px; font-weight: 500; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.hratio { font-size: 12.5px; font-weight: 600; font-variant-numeric: tabular-nums; color: var(--ink); }
+.house-card { padding: 14px; border-radius: 16px; background: #fff; border: 1px solid var(--line); display: flex; flex-direction: column; gap: 8px; }
+.house-card h3 { font-size: 16px; }
+.hc-bar { height: 6px; border-radius: 3px; background: var(--line); overflow: hidden; }
+.hc-bar i { display: block; height: 100%; width: 0; border-radius: 3px; background: var(--sage); transition: width .8s var(--ease); }
+.hc-bar i[data-state="border"] { background: var(--mustard); }
+.hc-bar i[data-state="unusual"] { background: var(--rust); }
+.hc-note { margin: 0; padding: 8px 10px; border-radius: 10px; background: var(--surface-2); font-size: 13px; line-height: 1.35; color: var(--ink); }
+.house-types { list-style: none; margin: 6px 0 0; padding: 0; display: flex; flex-direction: column; gap: 5px; }
+.house-types li { display: grid; grid-template-columns: 74px 1fr 40px; gap: 8px; align-items: center; font-size: 12.5px; }
+.house-types .tbar { height: 8px; border-radius: 4px; background: var(--line); overflow: hidden; }
+.house-types .tbar i { display: block; height: 100%; border-radius: 4px; }
+.house-types b { font-weight: 600; font-variant-numeric: tabular-nums; text-align: right; }
+.hc-similar { margin: 0; padding-left: 18px; color: var(--muted); font-size: 12.5px; }
+
+@media (max-width: 1199px) {
+  .house-section { grid-template-columns: 1fr; height: auto; }
+  .house-stage { height: 60vh; min-height: 420px; }
+}
+@media (max-width: 720px) {
+  .house-section { margin-top: -68px; }
+  .house-head { max-width: 80%; }
+  .house-head p { display: none; }
+  .house-legend { display: none; }
+}

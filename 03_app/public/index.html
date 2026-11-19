@@ -9,13 +9,12 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:wght@600;700&display=swap">
   <link rel="stylesheet" href="/app.css">
+  <link rel="stylesheet" href="/house.css">
   <script type="importmap">
     { "imports": {
         "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
         "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/" } }
   </script>
-  <!-- Cloudflare Web Analytics: cookieless page views (see /privacy). The token is public, not a secret. -->
-  <script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "f11646e0d49148caaab507023e0e8ef2"}'></script>
 </head>
 <body>
   <!-- Shown only if app.css or app.js fail to load (inline styles on purpose) -->
@@ -44,6 +43,82 @@
   </div>
 
   <main>
+    <!-- Whole-model check (house.js). Hidden unless /house/house.json exists. -->
+    <section id="house" class="house-section" hidden>
+      <div class="house-stage">
+        <div id="house-canvas" class="house-canvas"></div>
+        <div class="house-head">
+          <div class="label">Whole-model check</div>
+          <h2>Every element of a Revit model, checked</h2>
+          <p>A small house we modelled in Revit, split into its 56 elements. Each one went through the same model. Click an element to inspect it.</p>
+        </div>
+        <div class="house-legend glass">
+          <div id="house-legend-score" hidden>
+            <span class="label">Score, relative to the threshold</span>
+            <span><i style="width:120px;background:linear-gradient(90deg,#D6E1D9,#E3C27A,#CF7650)"></i></span>
+            <span style="justify-content:space-between;width:120px"><b>0×</b><b>1× = unusual</b></span>
+          </div>
+          <div id="house-legend-verdict" hidden>
+            <span><i style="background:#D6E1D9"></i>Normal</span>
+            <span><i style="background:#E3C27A"></i>Borderline (0.8–1×)</span>
+            <span><i style="background:#CF7650"></i>Unusual</span>
+          </div>
+          <div id="house-legend-type">
+            <span><i style="background:#F1EEE8;border:1px solid #D5D9D3"></i>Wall</span>
+            <span><i style="background:#E6D8C4"></i>Floor</span>
+            <span><i style="background:#A67B55"></i>Door</span>
+            <span><i style="background:#A9C8D4"></i>Window</span>
+            <span><i style="background:#B9A58A"></i>Stair</span>
+            <span><i style="background:#5F6563"></i>Railing</span>
+            <span><i style="background:#8FA597"></i>Furniture</span>
+            <span><i style="background:#FAFAF8;border:1px solid #D5D9D3"></i>Sanitary</span>
+          </div>
+        </div>
+        <div id="house-tip" class="house-tip" hidden></div>
+        <div class="toolbar house-tools" role="toolbar" aria-label="House view">
+          <button class="tb is-on" data-hmode="type" aria-pressed="true">Realistic</button>
+          <button class="tb" data-hmode="score" aria-pressed="false">Colour by score</button>
+          <button class="tb" data-hmode="verdict" aria-pressed="false">Colour by verdict</button>
+          <button id="house-reset" class="tb">Reset view</button>
+        </div>
+      </div>
+      <aside class="house-panel glass">
+        <div class="house-stats">
+          <div><span class="label">Elements</span><b id="hs-total">—</b></div>
+          <div class="u"><span class="label">Unusual</span><b id="hs-unusual">—</b></div>
+          <div class="b"><span class="label">Borderline</span><b id="hs-border">—</b></div>
+        </div>
+        <div>
+          <div class="label">Average score by type</div>
+          <ul id="house-types" class="house-types"></ul>
+        </div>
+        <div id="house-card" class="house-card" hidden>
+          <span class="label">Selected element</span>
+          <h3 id="hc-name"></h3>
+          <span><span id="hc-verdict" class="chip"></span></span>
+          <div class="hc-bar"><i id="hc-bar"></i></div>
+          <span id="hc-ratio" class="note"></span>
+          <p id="hc-note" class="hc-note"></p>
+          <span class="label">Most similar in the gallery</span>
+          <ul id="hc-similar" class="hc-similar"></ul>
+          <button id="hc-live" class="btn-primary" type="button">Run live analysis ↓</button>
+        </div>
+        <div>
+          <div class="label">Highest scores (closest to the threshold)</div>
+          <ul id="house-flagged" class="house-flagged"></ul>
+        </div>
+        <p id="house-note" class="note"></p>
+        <p class="note">Model: our own Revit model, Revit default families.</p>
+      </aside>
+    </section>
+    <div class="section-head house-break">
+      <div>
+        <div class="label">Single element</div>
+        <h2>Check one element yourself</h2>
+      </div>
+      <p class="note">Upload any .ifc element, pick one from the shelf below, or press "Run live analysis" on a house element.
+        It goes to the live model server and the result is saved.</p>
+    </div>
     <section class="workspace" id="workspace">
       <!-- LEFT: upload + verdict -->
       <aside class="panel panel-left">
@@ -224,6 +299,7 @@
   </footer>
 
   <script type="module" src="/app.js"></script>
+  <script type="module" src="/house.js"></script>
   <script>
     // Safety net: say it loudly if the stylesheet or the script did not load
     window.addEventListener("load", function () {

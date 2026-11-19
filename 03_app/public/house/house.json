@@ -1,0 +1,2253 @@
+{
+ "summary": {
+  "source": "house.ifc",
+  "threshold": 0.039336,
+  "elements": 56,
+  "scored": 56,
+  "unusual": 0,
+  "borderline": 0,
+  "note": "Precomputed with the same model and preprocessing as the live server; each element is checked on its own, as a separate IFC file."
+ },
+ "elements": [
+  {
+   "idx": 0,
+   "name": "Awning - 1L (AUS):0922:1664009",
+   "ifc_type": "IfcBuildingElementProxy",
+   "category": "Window",
+   "file": "elements/house_window_01.ifc",
+   "has_mesh": true,
+   "threshold": 0.039336,
+   "status": "ok",
+   "score": 0.009846,
+   "ratio": 0.25,
+   "unusual": false,
+   "similar": [
+    {
+     "ifc_class": "IfcDoor",
+     "file_name": "4b9e23fb1f5048eeaa9d697701d8de10.ifc",
+     "similarity": 0.986
+    },
+    {
+     "ifc_class": "IfcDoor",
+     "file_name": "5d05ffb467484d078e2bfd8449a1acc0.ifc",
+     "similarity": 0.985
+    },
+    {
+     "ifc_class": "IfcWall",
+     "file_name": "f4188d0546ec4cf19ba33564761b7312.ifc",
+     "similarity": 0.972
+    },
+    {
+     "ifc_class": "IfcWall",
+     "file_name": "cbfbf9febbcb42d493d15ce3f337e723.ifc",
+     "similarity": 0.967
+    },
+    {
+     "ifc_class": "IfcDoor",
+     "file_name": "b0f4f319f7064af2bd6752f02da7429d.ifc",
+     "similarity": 0.963
+    }
+   ]
+  },
+  {
+   "idx": 1,
+   "name": "Awning - 1L (AUS):0922:1664010",
+   "ifc_type": "IfcBuildingElementProxy",
+   "category": "Window",
+   "file": "elements/house_window_02.ifc",
+   "has_mesh": true,
+   "threshold": 0.039336,
+   "status": "ok",
+   "score": 0.009846,
+   "ratio": 0.25,
+   "unusual": false,
+   "similar": [
+    {
+     "ifc_class": "IfcDoor",
+     "file_name": "4b9e23fb1f5048eeaa9d697701d8de10.ifc",
+     "similarity": 0.986
+    },
+    {
+     "ifc_class": "IfcDoor",
+     "file_name": "5d05ffb467484d078e2bfd8449a1acc0.ifc",
+     "similarity": 0.985
+    },
+    {
+     "ifc_class": "IfcWall",
+     "file_name": "f4188d0546ec4cf19ba33564761b7312.ifc",
+     "similarity": 0.972
+    },
+    {
+     "ifc_class": "IfcWall",
+     "file_name": "cbfbf9febbcb42d493d15ce3f337e723.ifc",
+     "similarity": 0.967
+    },
+    {
+     "ifc_class": "IfcDoor",
+     "file_name": "b0f4f319f7064af2bd6752f02da7429d.ifc",
+     "similarity": 0.963
+    }
+   ]
+  },
+  {
+   "idx": 2,
+   "name": "Awning - 1L (AUS):0922:1664011",
+   "ifc_type": "IfcBuildingElementProxy",
+   "category": "Window",
+   "file": "elements/house_window_03.ifc",
+   "has_mesh": true,
+   "threshold": 0.039336,
+   "status": "ok",
+   "score": 0.008937,
+   "ratio": 0.227,
+   "unusual": false,
+   "similar": [
+    {
+     "ifc_class": "IfcDoor",
+     "file_name": "f0c4cf6ed63a4cef833ddcdb0b406fed.ifc",
+     "similarity": 0.995
+    },
+    {
+     "ifc_class": "IfcWall",
+     "file_name": "59166d4214ab4dfaa459663b0d612508.ifc",
+     "similarity": 0.995
+    },
+    {
+     "ifc_class": "IfcDoor",
+     "file_name": "069680c41ff048d381dc4ce0c3ab48d6.ifc",
+     "similarity": 0.992
+    },
+    {
+     "ifc_class": "IfcOutlet",
+     "file_name": "fe77278031e246ada9e125245e093440.ifc",
+     "similarity": 0.989
+    },
+    {
+     "ifc_class": "IfcWall",
+     "file_name": "070db97b84e24df0b591eaf74f8e6c9d.ifc",
+     "similarity": 0.989
+    }
+   ]
+  },
+  {
+   "idx": 3,
+   "name": "Awning - 1L (AUS):0922:1664012",
+   "ifc_type": "IfcBuildingElementProxy",
+   "category": "Window",
+   "file": "elements/house_window_04.ifc",
+   "has_mesh": true,
+   "threshold": 0.039336,
+   "status": "ok",
+   "score": 0.008937,
+   "ratio": 0.227,
+   "unusual": false,
+   "similar": [
+    {
+     "ifc_class": "IfcDoor",
+     "file_name": "f0c4cf6ed63a4cef833ddcdb0b406fed.ifc",
+     "similarity": 0.995
+    },
+    {
+     "ifc_class": "IfcWall",
+     "file_name": "59166d4214ab4dfaa459663b0d612508.ifc",
+     "similarity": 0.995
+    },
+    {
+     "ifc_class": "IfcDoor",
+     "file_name": "069680c41ff048d381dc4ce0c3ab48d6.ifc",
+     "similarity": 0.992
+    },
+    {
+     "ifc_class": "IfcOutlet",
+     "file_name": "fe77278031e246ada9e125245e093440.ifc",
+     "similarity": 0.989
+    },
+    {
+     "ifc_class": "IfcWall",
+     "file_name": "070db97b84e24df0b591eaf74f8e6c9d.ifc",
+     "similarity": 0.989
+    }
+   ]
+  },
+  {
+   "idx": 4,
+   "name": "Awning - 1L (AUS):0922:1664013",
+   "ifc_type": "IfcBuildingElementProxy",
+   "category": "Window",
+   "file": "elements/house_window_05.ifc",
+   "has_mesh": true,
+   "threshold": 0.039336,
+   "status": "ok",
+   "score": 0.009337,
+   "ratio": 0.237,
+   "unusual": false,
+   "similar": [
+    {
+     "ifc_class": "IfcDoor",
+     "file_name": "f0c4cf6ed63a4cef833ddcdb0b406fed.ifc",
+     "similarity": 0.994
+    },
+    {
+     "ifc_class": "IfcWall",
+     "file_name": "59166d4214ab4dfaa459663b0d612508.ifc",
+     "similarity": 0.994
+    },
+    {
+     "ifc_class": "IfcDoor",
+     "file_name": "069680c41ff048d381dc4ce0c3ab48d6.ifc",
+     "similarity": 0.993
+    },
+    {
+     "ifc_class": "IfcOutlet",
+     "file_name": "fe77278031e246ada9e125245e093440.ifc",
+     "similarity": 0.988
+    },
+    {
+     "ifc_class": "IfcWall",
+     "file_name": "070db97b84e24df0b591eaf74f8e6c9d.ifc",
+     "similarity": 0.988
+    }
+   ]
+  },
+  {
+   "idx": 5,
+   "name": "Awning - 1L (AUS):0922:1664014",
+   "ifc_type": "IfcBuildingElementProxy",
+   "category": "Window",
+   "file": "elements/house_window_06.ifc",
+   "has_mesh": true,
+   "threshold": 0.039336,
+   "status": "ok",
+   "score": 0.008937,
+   "ratio": 0.227,
+   "unusual": false,
+   "similar": [
+    {
+     "ifc_class": "IfcDoor",
+     "file_name": "f0c4cf6ed63a4cef833ddcdb0b406fed.ifc",
+     "similarity": 0.995
+    },
+    {
+     "ifc_class": "IfcWall",
+     "file_name": "59166d4214ab4dfaa459663b0d612508.ifc",
+     "similarity": 0.995
+    },
+    {
+     "ifc_class": "IfcDoor",
+     "file_name": "069680c41ff048d381dc4ce0c3ab48d6.ifc",
+     "similarity": 0.992
+    },
+    {
+     "ifc_class": "IfcOutlet",
+     "file_name": "fe77278031e246ada9e125245e093440.ifc",
+     "similarity": 0.989
+    },
+    {
+     "ifc_class": "IfcWall",
+     "file_name": "070db97b84e24df0b591eaf74f8e6c9d.ifc",
+     "similarity": 0.989
+    }
+   ]
+  },
+  {
+   "idx": 6,
+   "name": "Awning - 1L (AUS):0922:1664015",
+   "ifc_type": "IfcBuildingElementProxy",
+   "category": "Window",
+   "file": "elements/house_window_07.ifc",
+   "has_mesh": true,
+   "threshold": 0.039336,
+   "status": "ok",
+   "score": 0.009472,
+   "ratio": 0.241,
+   "unusual": false,
+   "similar": [
+    {
+     "ifc_class": "IfcDoor",
+     "file_name": "4b9e23fb1f5048eeaa9d697701d8de10.ifc",
+     "similarity": 0.989
+    },
+    {
+     "ifc_class": "IfcDoor",
+     "file_name": "5d05ffb467484d078e2bfd8449a1acc0.ifc",
+     "similarity": 0.987
+    },
+    {
+     "ifc_class": "IfcWall",
+     "file_name": "f4188d0546ec4cf19ba33564761b7312.ifc",
+     "similarity": 0.97
+    },
+    {
+     "ifc_class": "IfcWall",
+     "file_name": "cbfbf9febbcb42d493d15ce3f337e723.ifc",
+     "similarity": 0.968
+    },
+    {
+     "ifc_class": "IfcWall",
+     "file_name": "6ef47f915ecc435aa15736931429fb46.ifc",
+     "similarity": 0.961
+    }
+   ]
+  },
+  {
+   "idx": 7,
+   "name": "Awning - 1L (AUS):0922:1664016",
+   "ifc_type": "IfcBuildingElementProxy",
+   "category": "Window",
+   "file": "elements/house_window_08.ifc",
+   "has_mesh": true,
+   "threshold": 0.039336,
+   "status": "ok",
+   "score": 0.009848,
+   "ratio": 0.25,
+   "unusual": false,
+   "similar": [
+    {
+     "ifc_class": "IfcDoor",
+     "file_name": "4b9e23fb1f5048eeaa9d697701d8de10.ifc",
+     "similarity": 0.986
+    },
+    {
+     "ifc_class": "IfcDoor",
+     "file_name": "5d05ffb467484d078e2bfd8449a1acc0.ifc",
+     "similarity": 0.985
+    },
+    {
+     "ifc_class": "IfcWall",
+     "file_name": "f4188d0546ec4cf19ba33564761b7312.ifc",
+     "similarity": 0.972
+    },
+    {
+     "ifc_class": "IfcWall",
+     "file_name": "cbfbf9febbcb42d493d15ce3f337e723.ifc",
+     "similarity": 0.967
+    },
+    {
+     "ifc_class": "IfcDoor",
+     "file_name": "b0f4f319f7064af2bd6752f02da7429d.ifc",
+     "similarity": 0.963
+    }
+   ]
+  },
+  {
+   "idx": 8,
+   "name": "Awning - 1L (AUS):0922:1664017",
+   "ifc_type": "IfcBuildingElementProxy",
+   "category": "Window",
+   "file": "elements/house_window_09.ifc",
+   "has_mesh": true,
+   "threshold": 0.039336,
+   "status": "ok",
+   "score": 0.009848,
+   "ratio": 0.25,
+   "unusual": false,
+   "similar": [
+    {
+     "ifc_class": "IfcDoor",
+     "file_name": "4b9e23fb1f5048eeaa9d697701d8de10.ifc",
+     "similarity": 0.986
+    },
+    {
+     "ifc_class": "IfcDoor",
+     "file_name": "5d05ffb467484d078e2bfd8449a1acc0.ifc",
+     "similarity": 0.985
+    },
+    {
+     "ifc_class": "IfcWall",
+     "file_name": "f4188d0546ec4cf19ba33564761b7312.ifc",
+     "similarity": 0.972
+    },
+    {
+     "ifc_class": "IfcWall",
+     "file_name": "cbfbf9febbcb42d493d15ce3f337e723.ifc",
+     "similarity": 0.967
+    },
+    {
+     "ifc_class": "IfcDoor",
+     "file_name": "b0f4f319f7064af2bd6752f02da7429d.ifc",
+     "similarity": 0.963
+    }
+   ]
+  },
+  {
+   "idx": 9,
+   "name": "Awning - 1L (AUS):0922:1664018",
+   "ifc_type": "IfcBuildingElementProxy",
+   "category": "Window",
+   "file": "elements/house_window_10.ifc",
+   "has_mesh": true,
+   "threshold": 0.039336,
+   "status": "ok",
+   "score": 0.009848,
+   "ratio": 0.25,
+   "unusual": false,
+   "similar": [
+    {
+     "ifc_class": "IfcDoor",
+     "file_name": "4b9e23fb1f5048eeaa9d697701d8de10.ifc",
+     "similarity": 0.986
+    },
+    {
+     "ifc_class": "IfcDoor",
+     "file_name": "5d05ffb467484d078e2bfd8449a1acc0.ifc",
+     "similarity": 0.985
+    },
+    {
+     "ifc_class": "IfcWall",
+     "file_name": "f4188d0546ec4cf19ba33564761b7312.ifc",
+     "similarity": 0.972
+    },
+    {
+     "ifc_class": "IfcWall",
+     "file_name": "cbfbf9febbcb42d493d15ce3f337e723.ifc",
+     "similarity": 0.967
+    },
+    {
+     "ifc_class": "IfcDoor",
+     "file_name": "b0f4f319f7064af2bd6752f02da7429d.ifc",
+     "similarity": 0.963
+    }
+   ]
+  },
+  {
+   "idx": 10,
+   "name": "Awning - 1L (AUS):0922:1664019",
+   "ifc_type": "IfcBuildingElementProxy",
+   "category": "Window",
+   "file": "elements/house_window_11.ifc",
+   "has_mesh": true,
+   "threshold": 0.039336,
+   "status": "ok",
+   "score": 0.008938,
+   "ratio": 0.227,
+   "unusual": false,
+   "similar": [
+    {
+     "ifc_class": "IfcDoor",
+     "file_name": "f0c4cf6ed63a4cef833ddcdb0b406fed.ifc",
+     "similarity": 0.995
+    },
+    {
+     "ifc_class": "IfcWall",
+     "file_name": "59166d4214ab4dfaa459663b0d612508.ifc",
+     "similarity": 0.995
+    },
+    {
+     "ifc_class": "IfcDoor",
+     "file_name": "069680c41ff048d381dc4ce0c3ab48d6.ifc",
+     "similarity": 0.992
+    },
+    {
+     "ifc_class": "IfcOutlet",
+     "file_name": "fe77278031e246ada9e125245e093440.ifc",
+     "similarity": 0.989
+    },
+    {
+     "ifc_class": "IfcWall",
+     "file_name": "070db97b84e24df0b591eaf74f8e6c9d.ifc",
+     "similarity": 0.989
+    }
+   ]
+  },
+  {
+   "idx": 11,
+   "name": "Awning - 1L (AUS):0922:1664020",
+   "ifc_type": "IfcBuildingElementProxy",
+   "category": "Window",
+   "file": "elements/house_window_12.ifc",
+   "has_mesh": true,
+   "threshold": 0.039336,
+   "status": "ok",
+   "score": 0.008938,
+   "ratio": 0.227,
+   "unusual": false,
+   "similar": [
+    {
+     "ifc_class": "IfcDoor",
+     "file_name": "f0c4cf6ed63a4cef833ddcdb0b406fed.ifc",
+     "similarity": 0.995
+    },
+    {
+     "ifc_class": "IfcWall",
+     "file_name": "59166d4214ab4dfaa459663b0d612508.ifc",
+     "similarity": 0.995
+    },
+    {
+     "ifc_class": "IfcDoor",
+     "file_name": "069680c41ff048d381dc4ce0c3ab48d6.ifc",
+     "similarity": 0.992
+    },
+    {
+     "ifc_class": "IfcOutlet",
+     "file_name": "fe77278031e246ada9e125245e093440.ifc",
+     "similarity": 0.989
+    },
+    {
+     "ifc_class": "IfcWall",
+     "file_name": "070db97b84e24df0b591eaf74f8e6c9d.ifc",
+     "similarity": 0.989
+    }
+   ]
+  },
+  {
+   "idx": 12,
+   "name": "Awning - 1L (AUS):0922:1664021",
+   "ifc_type": "IfcBuildingElementProxy",
+   "category": "Window",
+   "file": "elements/house_window_13.ifc",
+   "has_mesh": true,
+   "threshold": 0.039336,
+   "status": "ok",
+   "score": 0.009847,
+   "ratio": 0.25,
+   "unusual": false,
+   "similar": [
+    {
+     "ifc_class": "IfcDoor",
+     "file_name": "4b9e23fb1f5048eeaa9d697701d8de10.ifc",
+     "similarity": 0.986
+    },
+    {
+     "ifc_class": "IfcDoor",
+     "file_name": "5d05ffb467484d078e2bfd8449a1acc0.ifc",
+     "similarity": 0.985
+    },
+    {
+     "ifc_class": "IfcWall",
+     "file_name": "f4188d0546ec4cf19ba33564761b7312.ifc",
+     "similarity": 0.972
+    },
+    {
+     "ifc_class": "IfcWall",
+     "file_name": "cbfbf9febbcb42d493d15ce3f337e723.ifc",
+     "similarity": 0.967
+    },
+    {
+     "ifc_class": "IfcDoor",
+     "file_name": "b0f4f319f7064af2bd6752f02da7429d.ifc",
+     "similarity": 0.963
+    }
+   ]
+  },
+  {
+   "idx": 13,
+   "name": "Sofa (3):1830mm:1664029",
+   "ifc_type": "IfcBuildingElementProxy",
+   "category": "Furniture",
+   "file": "elements/house_furniture_01.ifc",
+   "has_mesh": true,
+   "threshold": 0.039336,
+   "status": "ok",
+   "score": 0.019122,
+   "ratio": 0.486,
+   "unusual": false,
+   "similar": [
+    {
+     "ifc_class": "IfcPipeSegment",
+     "file_name": "eb4ee1d7aba14db2bb5ff3ed0df23bdf.ifc",
+     "similarity": 0.996
+    },
+    {
+     "ifc_class": "IfcRailing",
+     "file_name": "7dda66d51c504994a5bddc479dcae424.ifc",
+     "similarity": 0.993
+    },
+    {
+     "ifc_class": "IfcPipeSegment",
+     "file_name": "337b75cd3db6462f84312f52d65fbe4a.ifc",
+     "similarity": 0.992
+    },
+    {
+     "ifc_class": "IfcPipeSegment",
+     "file_name": "a944dcf875d14023abdfa1a050cdb135.ifc",
+     "similarity": 0.991
+    },
+    {
+     "ifc_class": "IfcCableCarrierSegment",
+     "file_name": "46b8c29fa27f4507aee8556df8b96f0f.ifc",
+     "similarity": 0.981
+    }
+   ]
+  },
+  {
+   "idx": 14,
+   "name": "WC Dis w Cistern (7):540 x 360mm:1664030",
+   "ifc_type": "IfcBuildingElementProxy",
+   "category": "Sanitary",
+   "file": "elements/house_sanitary_01.ifc",
+   "has_mesh": true,
+   "threshold": 0.039336,
+   "status": "ok",
+   "score": 0.029263,
+   "ratio": 0.744,
+   "unusual": false,
+   "similar": [
+    {
+     "ifc_class": "IfcWall",
+     "file_name": "28f0692a928d447bbfce7df807910003.ifc",
+     "similarity": 0.949
+    },
+    {
+     "ifc_class": "IfcFurniture",
+     "file_name": "302ff6afccca49ca87a98fac75c29708.ifc",
+     "similarity": 0.944
+    },
+    {
+     "ifc_class": "IfcStair",
+     "file_name": "4b41a7f3aa5c4f88a4d8a4abd817d5cb.ifc",
+     "similarity": 0.934
+    },
+    {
+     "ifc_class": "IfcCableCarrierSegment",
+     "file_name": "4cf99930db6e4720b740e5a4cfddf2c6.ifc",
+     "similarity": 0.912
+    },
+    {
+     "ifc_class": "IfcDoor",
+     "file_name": "069680c41ff048d381dc4ce0c3ab48d6.ifc",
+     "similarity": 0.881
+    }
+   ]
+  },
+  {
+   "idx": 15,
+   "name": "WC Dis w Cistern (7):540 x 360mm:1664031",
+   "ifc_type": "IfcBuildingElementProxy",
+   "category": "Sanitary",
+   "file": "elements/house_sanitary_02.ifc",
+   "has_mesh": true,
+   "threshold": 0.039336,
+   "status": "ok",
+   "score": 0.03031,
+   "ratio": 0.771,
+   "unusual": false,
+   "similar": [
+    {
+     "ifc_class": "IfcDuctSegment",
+     "file_name": "f59b181b9e364aa0a9f71354a4f57a9e.ifc",
+     "similarity": 0.995
+    },
+    {
+     "ifc_class": "IfcStair",
+     "file_name": "3d829f108db2468eb3d07f3b501e6b1a.ifc",
+     "similarity": 0.946
+    },
+    {
+     "ifc_class": "IfcDoor",
+     "file_name": "f1ff44a4824e472f84650f3de75419f6.ifc",
+     "similarity": 0.91
+    },
+    {
+     "ifc_class": "IfcPipeFitting",
+     "file_name": "c0ea87d3cef84d3ca236672b8407ebfd.ifc",
+     "similarity": 0.908
+    },
+    {
+     "ifc_class": "IfcFurniture",
+     "file_name": "302ff6afccca49ca87a98fac75c29708.ifc",
+     "similarity": 0.866
+    }
+   ]
+  },
+  {
+   "idx": 16,
+   "name": "WC Dis w Cistern (7):540 x 360mm:1664032",
+   "ifc_type": "IfcBuildingElementProxy",
+   "category": "Sanitary",
+   "file": "elements/house_sanitary_03.ifc",
+   "has_mesh": true,
+   "threshold": 0.039336,
+   "status": "ok",
+   "score": 0.029263,
+   "ratio": 0.744,
+   "unusual": false,
+   "similar": [
+    {
+     "ifc_class": "IfcWall",
+     "file_name": "28f0692a928d447bbfce7df807910003.ifc",
+     "similarity": 0.949
+    },
+    {
+     "ifc_class": "IfcFurniture",
+     "file_name": "302ff6afccca49ca87a98fac75c29708.ifc",
+     "similarity": 0.944
+    },
+    {
+     "ifc_class": "IfcStair",
+     "file_name": "4b41a7f3aa5c4f88a4d8a4abd817d5cb.ifc",
+     "similarity": 0.934
+    },
+    {
+     "ifc_class": "IfcCableCarrierSegment",
+     "file_name": "4cf99930db6e4720b740e5a4cfddf2c6.ifc",
+     "similarity": 0.912
+    },
+    {
+     "ifc_class": "IfcDoor",
+     "file_name": "069680c41ff048d381dc4ce0c3ab48d6.ifc",
+     "similarity": 0.881
+    }
+   ]
+  },
+  {
+   "idx": 17,
+   "name": "Basin - Bathroom (4):660 x 560mm:1664033",
+   "ifc_type": "IfcBuildingElementProxy",
+   "category": "Sanitary",
+   "file": "elements/house_sanitary_04.ifc",
+   "has_mesh": true,
+   "threshold": 0.039336,
+   "status": "ok",
+   "score": 0.026682,
+   "ratio": 0.678,
+   "unusual": false,
+   "similar": [
+    {
+     "ifc_class": "IfcAirTerminal",
+     "file_name": "82be5423a91d4d2cae29d18039ba7ef8.ifc",
+     "similarity": 0.984
+    },
+    {
+     "ifc_class": "IfcSlab",
+     "file_name": "bfe5409e44ec4a108c670e100f2f430e.ifc",
+     "similarity": 0.983
+    },
+    {
+     "ifc_class": "IfcAirTerminal",
+     "file_name": "d9a9862aff6946aca8de6ee3764fbb29.ifc",
+     "similarity": 0.98
+    },
+    {
+     "ifc_class": "IfcAirTerminal",
+     "file_name": "bd10f188995e4aabaf448b7d0f68c531.ifc",
+     "similarity": 0.973
+    },
+    {
+     "ifc_class": "IfcSpaceHeater",
+     "file_name": "c8da9359290446ce80c280c7a004e853.ifc",
+     "similarity": 0.948
+    }
+   ]
+  },
+  {
+   "idx": 18,
+   "name": "Basin - Bathroom (4):660 x 560mm:1664034",
+   "ifc_type": "IfcBuildingElementProxy",
+   "category": "Sanitary",
+   "file": "elements/house_sanitary_05.ifc",
+   "has_mesh": true,
+   "threshold": 0.039336,
+   "status": "ok",
+   "score": 0.027416,
+   "ratio": 0.697,
+   "unusual": false,
+   "similar": [
+    {
+     "ifc_class": "IfcAirTerminal",
+     "file_name": "82be5423a91d4d2cae29d18039ba7ef8.ifc",
+     "similarity": 0.976
+    },
+    {
+     "ifc_class": "IfcSlab",
+     "file_name": "bfe5409e44ec4a108c670e100f2f430e.ifc",
+     "similarity": 0.975
+    },
+    {
+     "ifc_class": "IfcAirTerminal",
+     "file_name": "d9a9862aff6946aca8de6ee3764fbb29.ifc",
+     "similarity": 0.972
+    },
+    {
+     "ifc_class": "IfcAirTerminal",
+     "file_name": "bd10f188995e4aabaf448b7d0f68c531.ifc",
+     "similarity": 0.965
+    },
+    {
+     "ifc_class": "IfcSpaceHeater",
+     "file_name": "c8da9359290446ce80c280c7a004e853.ifc",
+     "similarity": 0.942
+    }
+   ]
+  },
+  {
+   "idx": 19,
+   "name": "Basin - Bathroom (4):660 x 560mm:1664035",
+   "ifc_type": "IfcBuildingElementProxy",
+   "category": "Sanitary",
+   "file": "elements/house_sanitary_06.ifc",
+   "has_mesh": true,
+   "threshold": 0.039336,
+   "status": "ok",
+   "score": 0.026553,
+   "ratio": 0.675,
+   "unusual": false,
+   "similar": [
+    {
+     "ifc_class": "IfcSlab",
+     "file_name": "bfe5409e44ec4a108c670e100f2f430e.ifc",
+     "similarity": 0.981
+    },
+    {
+     "ifc_class": "IfcAirTerminal",
+     "file_name": "82be5423a91d4d2cae29d18039ba7ef8.ifc",
+     "similarity": 0.97
+    },
+    {
+     "ifc_class": "IfcAirTerminal",
+     "file_name": "d9a9862aff6946aca8de6ee3764fbb29.ifc",
+     "similarity": 0.968
+    },
+    {
+     "ifc_class": "IfcAirTerminal",
+     "file_name": "bd10f188995e4aabaf448b7d0f68c531.ifc",
+     "similarity": 0.958
+    },
+    {
+     "ifc_class": "IfcSpaceHeater",
+     "file_name": "c8da9359290446ce80c280c7a004e853.ifc",
+     "similarity": 0.938
+    }
+   ]
+  },
+  {
+   "idx": 20,
+   "name": "Bed - Large Sizes (AUS):King:1664036",
+   "ifc_type": "IfcBuildingElementProxy",
+   "category": "Furniture",
+   "file": "elements/house_furniture_02.ifc",
+   "has_mesh": true,
+   "threshold": 0.039336,
+   "status": "ok",
+   "score": 0.019453,
+   "ratio": 0.495,
+   "unusual": false,
+   "similar": [
+    {
+     "ifc_class": "IfcAirTerminal",
+     "file_name": "82be5423a91d4d2cae29d18039ba7ef8.ifc",
+     "similarity": 0.967
+    },
+    {
+     "ifc_class": "IfcAirTerminal",
+     "file_name": "bd10f188995e4aabaf448b7d0f68c531.ifc",
+     "similarity": 0.967
+    },
+    {
+     "ifc_class": "IfcAirTerminal",
+     "file_name": "d9a9862aff6946aca8de6ee3764fbb29.ifc",
+     "similarity": 0.961
+    },
+    {
+     "ifc_class": "IfcSlab",
+     "file_name": "bfe5409e44ec4a108c670e100f2f430e.ifc",
+     "similarity": 0.96
+    },
+    {
+     "ifc_class": "IfcSpaceHeater",
+     "file_name": "c8da9359290446ce80c280c7a004e853.ifc",
+     "similarity": 0.932
+    }
+   ]
+  },
+  {
+   "idx": 21,
+   "name": "Bed - Large Sizes (AUS):King:1664052",
+   "ifc_type": "IfcBuildingElementProxy",
+   "category": "Furniture",
+   "file": "elements/house_furniture_03.ifc",
+   "has_mesh": true,
+   "threshold": 0.039336,
+   "status": "ok",
+   "score": 0.019062,
+   "ratio": 0.485,
+   "unusual": false,
+   "similar": [
+    {
+     "ifc_class": "IfcAirTerminal",
+     "file_name": "04327ff13a5547a3b2ab3fa7377d5a26.ifc",
+     "similarity": 0.97
+    },
+    {
+     "ifc_class": "IfcAirTerminal",
+     "file_name": "82be5423a91d4d2cae29d18039ba7ef8.ifc",
+     "similarity": 0.931
+    },
+    {
+     "ifc_class": "IfcAirTerminal",
+     "file_name": "bd10f188995e4aabaf448b7d0f68c531.ifc",
+     "similarity": 0.924
+    },
+    {
+     "ifc_class": "IfcSlab",
+     "file_name": "bfe5409e44ec4a108c670e100f2f430e.ifc",
+     "similarity": 0.92
+    },
+    {
+     "ifc_class": "IfcAirTerminal",
+     "file_name": "d9a9862aff6946aca8de6ee3764fbb29.ifc",
+     "similarity": 0.918
+    }
+   ]
+  },
+  {
+   "idx": 22,
+   "name": "Bed - Large Sizes (AUS):King:1664053",
+   "ifc_type": "IfcBuildingElementProxy",
+   "category": "Furniture",
+   "file": "elements/house_furniture_04.ifc",
+   "has_mesh": true,
+   "threshold": 0.039336,
+   "status": "ok",
+   "score": 0.019036,
+   "ratio": 0.484,
+   "unusual": false,
+   "similar": [
+    {
+     "ifc_class": "IfcSlab",
+     "file_name": "bfe5409e44ec4a108c670e100f2f430e.ifc",
+     "similarity": 0.939
+    },
+    {
+     "ifc_class": "IfcAirTerminal",
+     "file_name": "d9a9862aff6946aca8de6ee3764fbb29.ifc",
+     "similarity": 0.933
+    },
+    {
+     "ifc_class": "IfcAirTerminal",
+     "file_name": "82be5423a91d4d2cae29d18039ba7ef8.ifc",
+     "similarity": 0.931
+    },
+    {
+     "ifc_class": "IfcAirTerminal",
+     "file_name": "bd10f188995e4aabaf448b7d0f68c531.ifc",
+     "similarity": 0.909
+    },
+    {
+     "ifc_class": "IfcDuctFitting",
+     "file_name": "7f058f031a854a969d1ed7638d2e1701.ifc",
+     "similarity": 0.904
+    }
+   ]
+  },
+  {
+   "idx": 23,
+   "name": "Sofa (3):1830mm:1664054",
+   "ifc_type": "IfcBuildingElementProxy",
+   "category": "Furniture",
+   "file": "elements/house_furniture_05.ifc",
+   "has_mesh": true,
+   "threshold": 0.039336,
+   "status": "ok",
+   "score": 0.019088,
+   "ratio": 0.485,
+   "unusual": false,
+   "similar": [
+    {
+     "ifc_class": "IfcDuctSegment",
+     "file_name": "c57068c1935c46b28b80a2cdcfc8a209.ifc",
+     "similarity": 0.999
+    },
+    {
+     "ifc_class": "IfcPipeSegment",
+     "file_name": "4ec28a5e5fd741809a191c60607b6cb7.ifc",
+     "similarity": 0.994
+    },
+    {
+     "ifc_class": "IfcFurniture",
+     "file_name": "e4af3ad973494b5d8fe5bf34c86d66a0.ifc",
+     "similarity": 0.99
+    },
+    {
+     "ifc_class": "IfcRailing",
+     "file_name": "d2807ac505944105b939e7fe08d338c9.ifc",
+     "similarity": 0.987
+    },
+    {
+     "ifc_class": "IfcDuctSegment",
+     "file_name": "44ba9e2687674e2bbb487efe32d4e3a8.ifc",
+     "similarity": 0.985
+    }
+   ]
+  },
+  {
+   "idx": 24,
+   "name": "Monolithic Run:50mm Tread 10mm Riser 150mm Structural Depth:1664066",
+   "ifc_type": "IfcBuildingElementProxy",
+   "category": "Stair",
+   "file": "elements/house_stair_01.ifc",
+   "has_mesh": true,
+   "threshold": 0.039336,
+   "status": "ok",
+   "score": 0.014852,
+   "ratio": 0.378,
+   "unusual": false,
+   "similar": [
+    {
+     "ifc_class": "IfcCableCarrierFitting",
+     "file_name": "743f99b0b78240469c00a901e225fd82.ifc",
+     "similarity": 0.903
+    },
+    {
+     "ifc_class": "IfcPipeFitting",
+     "file_name": "99b4eb2ecc75429186db330ef21c6c27.ifc",
+     "similarity": 0.853
+    },
+    {
+     "ifc_class": "IfcRailing",
+     "file_name": "d2917c960a7d488ba04ea17d2d5f4825.ifc",
+     "similarity": 0.753
+    },
+    {
+     "ifc_class": "IfcDuctSegment",
+     "file_name": "f59b181b9e364aa0a9f71354a4f57a9e.ifc",
+     "similarity": 0.726
+    },
+    {
+     "ifc_class": "IfcCableCarrierFitting",
+     "file_name": "b49740ff4c5849ccbac9c0705e50eecd.ifc",
+     "similarity": 0.725
+    }
+   ]
+  },
+  {
+   "idx": 25,
+   "name": "Top Rail Type:Rectangular - 50x50mm:1664073",
+   "ifc_type": "IfcBuildingElementProxy",
+   "category": "Railing",
+   "file": "elements/house_railing_01.ifc",
+   "has_mesh": true,
+   "threshold": 0.039336,
+   "status": "ok",
+   "score": 0.017052,
+   "ratio": 0.433,
+   "unusual": false,
+   "similar": [
+    {
+     "ifc_class": "IfcPipeFitting",
+     "file_name": "99b4eb2ecc75429186db330ef21c6c27.ifc",
+     "similarity": 0.879
+    },
+    {
+     "ifc_class": "IfcCableCarrierFitting",
+     "file_name": "743f99b0b78240469c00a901e225fd82.ifc",
+     "similarity": 0.859
+    },
+    {
+     "ifc_class": "IfcDuctSegment",
+     "file_name": "f59b181b9e364aa0a9f71354a4f57a9e.ifc",
+     "similarity": 0.735
+    },
+    {
+     "ifc_class": "IfcAirTerminal",
+     "file_name": "ebc77df66bcb448d89f156e55de21319.ifc",
+     "similarity": 0.732
+    },
+    {
+     "ifc_class": "IfcStair",
+     "file_name": "e4b1c92f9f374aa0aa7f6e8b60584072.ifc",
+     "similarity": 0.732
+    }
+   ]
+  },
+  {
+   "idx": 26,
+   "name": "Railing:900mm:1664068",
+   "ifc_type": "IfcBuildingElementProxy",
+   "category": "Railing",
+   "file": "elements/house_railing_02.ifc",
+   "has_mesh": true,
+   "threshold": 0.039336,
+   "status": "ok",
+   "score": 0.00952,
+   "ratio": 0.242,
+   "unusual": false,
+   "similar": [
+    {
+     "ifc_class": "IfcPipeFitting",
+     "file_name": "99b4eb2ecc75429186db330ef21c6c27.ifc",
+     "similarity": 0.855
+    },
+    {
+     "ifc_class": "IfcCableCarrierFitting",
+     "file_name": "743f99b0b78240469c00a901e225fd82.ifc",
+     "similarity": 0.825
+    },
+    {
+     "ifc_class": "IfcStair",
+     "file_name": "3d829f108db2468eb3d07f3b501e6b1a.ifc",
+     "similarity": 0.78
+    },
+    {
+     "ifc_class": "IfcAirTerminal",
+     "file_name": "ebc77df66bcb448d89f156e55de21319.ifc",
+     "similarity": 0.773
+    },
+    {
+     "ifc_class": "IfcDuctSegment",
+     "file_name": "f59b181b9e364aa0a9f71354a4f57a9e.ifc",
+     "similarity": 0.773
+    }
+   ]
+  },
+  {
+   "idx": 27,
+   "name": "Single - Steel Frame (AUS):920 45deg:1664022",
+   "ifc_type": "IfcDoor",
+   "category": "Door",
+   "file": "elements/house_door_01.ifc",
+   "has_mesh": true,
+   "threshold": 0.039336,
+   "status": "ok",
+   "score": 0.010432,
+   "ratio": 0.265,
+   "unusual": false,
+   "similar": [
+    {
+     "ifc_class": "IfcDoor",
+     "file_name": "5d05ffb467484d078e2bfd8449a1acc0.ifc",
+     "similarity": 1.0
+    },
+    {
+     "ifc_class": "IfcDoor",
+     "file_name": "4b9e23fb1f5048eeaa9d697701d8de10.ifc",
+     "similarity": 1.0
+    },
+    {
+     "ifc_class": "IfcWall",
+     "file_name": "6ef47f915ecc435aa15736931429fb46.ifc",
+     "similarity": 0.992
+    },
+    {
+     "ifc_class": "IfcWall",
+     "file_name": "cbfbf9febbcb42d493d15ce3f337e723.ifc",
+     "similarity": 0.992
+    },
+    {
+     "ifc_class": "IfcDoor",
+     "file_name": "4e2c6d8f1460487f9d6879f0ebd71f7d.ifc",
+     "similarity": 0.991
+    }
+   ]
+  },
+  {
+   "idx": 28,
+   "name": "Single - Steel Frame (AUS):920 45deg:1664023",
+   "ifc_type": "IfcDoor",
+   "category": "Door",
+   "file": "elements/house_door_02.ifc",
+   "has_mesh": true,
+   "threshold": 0.039336,
+   "status": "ok",
+   "score": 0.010096,
+   "ratio": 0.257,
+   "unusual": false,
+   "similar": [
+    {
+     "ifc_class": "IfcDoor",
+     "file_name": "5d05ffb467484d078e2bfd8449a1acc0.ifc",
+     "similarity": 0.999
+    },
+    {
+     "ifc_class": "IfcDoor",
+     "file_name": "4b9e23fb1f5048eeaa9d697701d8de10.ifc",
+     "similarity": 0.999
+    },
+    {
+     "ifc_class": "IfcWall",
+     "file_name": "6ef47f915ecc435aa15736931429fb46.ifc",
+     "similarity": 0.992
+    },
+    {
+     "ifc_class": "IfcDoor",
+     "file_name": "4e2c6d8f1460487f9d6879f0ebd71f7d.ifc",
+     "similarity": 0.992
+    },
+    {
+     "ifc_class": "IfcSpaceHeater",
+     "file_name": "18a8c59c2d16421dacd292d97ee5fc9f.ifc",
+     "similarity": 0.989
+    }
+   ]
+  },
+  {
+   "idx": 29,
+   "name": "Single - Steel Frame (AUS):920 45deg:1664024",
+   "ifc_type": "IfcDoor",
+   "category": "Door",
+   "file": "elements/house_door_03.ifc",
+   "has_mesh": true,
+   "threshold": 0.039336,
+   "status": "ok",
+   "score": 0.010432,
+   "ratio": 0.265,
+   "unusual": false,
+   "similar": [
+    {
+     "ifc_class": "IfcDoor",
+     "file_name": "5d05ffb467484d078e2bfd8449a1acc0.ifc",
+     "similarity": 1.0
+    },
+    {
+     "ifc_class": "IfcDoor",
+     "file_name": "4b9e23fb1f5048eeaa9d697701d8de10.ifc",
+     "similarity": 1.0
+    },
+    {
+     "ifc_class": "IfcWall",
+     "file_name": "6ef47f915ecc435aa15736931429fb46.ifc",
+     "similarity": 0.992
+    },
+    {
+     "ifc_class": "IfcWall",
+     "file_name": "cbfbf9febbcb42d493d15ce3f337e723.ifc",
+     "similarity": 0.992
+    },
+    {
+     "ifc_class": "IfcDoor",
+     "file_name": "4e2c6d8f1460487f9d6879f0ebd71f7d.ifc",
+     "similarity": 0.991
+    }
+   ]
+  },
+  {
+   "idx": 30,
+   "name": "Single - Steel Frame (AUS):920 45deg:1664025",
+   "ifc_type": "IfcDoor",
+   "category": "Door",
+   "file": "elements/house_door_04.ifc",
+   "has_mesh": true,
+   "threshold": 0.039336,
+   "status": "ok",
+   "score": 0.010097,
+   "ratio": 0.257,
+   "unusual": false,
+   "similar": [
+    {
+     "ifc_class": "IfcDoor",
+     "file_name": "5d05ffb467484d078e2bfd8449a1acc0.ifc",
+     "similarity": 0.999
+    },
+    {
+     "ifc_class": "IfcDoor",
+     "file_name": "4b9e23fb1f5048eeaa9d697701d8de10.ifc",
+     "similarity": 0.999
+    },
+    {
+     "ifc_class": "IfcWall",
+     "file_name": "6ef47f915ecc435aa15736931429fb46.ifc",
+     "similarity": 0.992
+    },
+    {
+     "ifc_class": "IfcDoor",
+     "file_name": "4e2c6d8f1460487f9d6879f0ebd71f7d.ifc",
+     "similarity": 0.992
+    },
+    {
+     "ifc_class": "IfcSpaceHeater",
+     "file_name": "18a8c59c2d16421dacd292d97ee5fc9f.ifc",
+     "similarity": 0.989
+    }
+   ]
+  },
+  {
+   "idx": 31,
+   "name": "Single - Steel Frame (AUS):920 45deg:1664026",
+   "ifc_type": "IfcDoor",
+   "category": "Door",
+   "file": "elements/house_door_05.ifc",
+   "has_mesh": true,
+   "threshold": 0.039336,
+   "status": "ok",
+   "score": 0.010037,
+   "ratio": 0.255,
+   "unusual": false,
+   "similar": [
+    {
+     "ifc_class": "IfcDoor",
+     "file_name": "5d05ffb467484d078e2bfd8449a1acc0.ifc",
+     "similarity": 0.999
+    },
+    {
+     "ifc_class": "IfcDoor",
+     "file_name": "4b9e23fb1f5048eeaa9d697701d8de10.ifc",
+     "similarity": 0.999
+    },
+    {
+     "ifc_class": "IfcWall",
+     "file_name": "6ef47f915ecc435aa15736931429fb46.ifc",
+     "similarity": 0.991
+    },
+    {
+     "ifc_class": "IfcWall",
+     "file_name": "cbfbf9febbcb42d493d15ce3f337e723.ifc",
+     "similarity": 0.99
+    },
+    {
+     "ifc_class": "IfcDoor",
+     "file_name": "4e2c6d8f1460487f9d6879f0ebd71f7d.ifc",
+     "similarity": 0.987
+    }
+   ]
+  },
+  {
+   "idx": 32,
+   "name": "Single - Steel Frame (AUS):920 45deg:1664027",
+   "ifc_type": "IfcDoor",
+   "category": "Door",
+   "file": "elements/house_door_06.ifc",
+   "has_mesh": true,
+   "threshold": 0.039336,
+   "status": "ok",
+   "score": 0.010432,
+   "ratio": 0.265,
+   "unusual": false,
+   "similar": [
+    {
+     "ifc_class": "IfcDoor",
+     "file_name": "5d05ffb467484d078e2bfd8449a1acc0.ifc",
+     "similarity": 1.0
+    },
+    {
+     "ifc_class": "IfcDoor",
+     "file_name": "4b9e23fb1f5048eeaa9d697701d8de10.ifc",
+     "similarity": 1.0
+    },
+    {
+     "ifc_class": "IfcWall",
+     "file_name": "6ef47f915ecc435aa15736931429fb46.ifc",
+     "similarity": 0.992
+    },
+    {
+     "ifc_class": "IfcWall",
+     "file_name": "cbfbf9febbcb42d493d15ce3f337e723.ifc",
+     "similarity": 0.992
+    },
+    {
+     "ifc_class": "IfcDoor",
+     "file_name": "4e2c6d8f1460487f9d6879f0ebd71f7d.ifc",
+     "similarity": 0.991
+    }
+   ]
+  },
+  {
+   "idx": 33,
+   "name": "Single - Steel Frame (AUS):920 45deg:1664028",
+   "ifc_type": "IfcDoor",
+   "category": "Door",
+   "file": "elements/house_door_07.ifc",
+   "has_mesh": true,
+   "threshold": 0.039336,
+   "status": "ok",
+   "score": 0.010432,
+   "ratio": 0.265,
+   "unusual": false,
+   "similar": [
+    {
+     "ifc_class": "IfcDoor",
+     "file_name": "5d05ffb467484d078e2bfd8449a1acc0.ifc",
+     "similarity": 1.0
+    },
+    {
+     "ifc_class": "IfcDoor",
+     "file_name": "4b9e23fb1f5048eeaa9d697701d8de10.ifc",
+     "similarity": 1.0
+    },
+    {
+     "ifc_class": "IfcWall",
+     "file_name": "6ef47f915ecc435aa15736931429fb46.ifc",
+     "similarity": 0.992
+    },
+    {
+     "ifc_class": "IfcWall",
+     "file_name": "cbfbf9febbcb42d493d15ce3f337e723.ifc",
+     "similarity": 0.992
+    },
+    {
+     "ifc_class": "IfcDoor",
+     "file_name": "4e2c6d8f1460487f9d6879f0ebd71f7d.ifc",
+     "similarity": 0.991
+    }
+   ]
+  },
+  {
+   "idx": 34,
+   "name": "Single - Steel Frame (AUS):920 45deg:1664051",
+   "ifc_type": "IfcDoor",
+   "category": "Door",
+   "file": "elements/house_door_08.ifc",
+   "has_mesh": true,
+   "threshold": 0.039336,
+   "status": "ok",
+   "score": 0.009981,
+   "ratio": 0.254,
+   "unusual": false,
+   "similar": [
+    {
+     "ifc_class": "IfcWall",
+     "file_name": "070db97b84e24df0b591eaf74f8e6c9d.ifc",
+     "similarity": 0.998
+    },
+    {
+     "ifc_class": "IfcDoor",
+     "file_name": "f0c4cf6ed63a4cef833ddcdb0b406fed.ifc",
+     "similarity": 0.997
+    },
+    {
+     "ifc_class": "IfcDoor",
+     "file_name": "069680c41ff048d381dc4ce0c3ab48d6.ifc",
+     "similarity": 0.997
+    },
+    {
+     "ifc_class": "IfcDoor",
+     "file_name": "d7028e272f3041189f443404938212d5.ifc",
+     "similarity": 0.997
+    },
+    {
+     "ifc_class": "IfcDoor",
+     "file_name": "a815eb73d6064d739286f27250cc830c.ifc",
+     "similarity": 0.996
+    }
+   ]
+  },
+  {
+   "idx": 35,
+   "name": "Floor:Generic 150mm:1664040",
+   "ifc_type": "IfcSlab",
+   "category": "Floor",
+   "file": "elements/house_floor_01.ifc",
+   "has_mesh": true,
+   "threshold": 0.039336,
+   "status": "ok",
+   "score": 0.005797,
+   "ratio": 0.147,
+   "unusual": false,
+   "similar": [
+    {
+     "ifc_class": "IfcSlab",
+     "file_name": "13193db9bac445b4ad213be99d06631d.ifc",
+     "similarity": 0.965
+    },
+    {
+     "ifc_class": "IfcPlate",
+     "file_name": "80d5164744c24196a3988d477d983d83.ifc",
+     "similarity": 0.965
+    },
+    {
+     "ifc_class": "IfcSlab",
+     "file_name": "2c334b61c92043c99d874f7b4b4d30d1.ifc",
+     "similarity": 0.957
+    },
+    {
+     "ifc_class": "IfcSpaceHeater",
+     "file_name": "7d6b42a2a77343b8b696a29794efdd39.ifc",
+     "similarity": 0.95
+    },
+    {
+     "ifc_class": "IfcSlab",
+     "file_name": "715541b108df460cad706760ea1f0dc1.ifc",
+     "similarity": 0.949
+    }
+   ]
+  },
+  {
+   "idx": 36,
+   "name": "Cast-In-Place Stair:Stair:1664065 Run 1",
+   "ifc_type": "IfcStairFlight",
+   "category": "Stair",
+   "file": "elements/house_stair_02.ifc",
+   "has_mesh": true,
+   "threshold": 0.039336,
+   "status": "ok",
+   "score": 0.014852,
+   "ratio": 0.378,
+   "unusual": false,
+   "similar": [
+    {
+     "ifc_class": "IfcCableCarrierFitting",
+     "file_name": "743f99b0b78240469c00a901e225fd82.ifc",
+     "similarity": 0.903
+    },
+    {
+     "ifc_class": "IfcPipeFitting",
+     "file_name": "99b4eb2ecc75429186db330ef21c6c27.ifc",
+     "similarity": 0.853
+    },
+    {
+     "ifc_class": "IfcRailing",
+     "file_name": "d2917c960a7d488ba04ea17d2d5f4825.ifc",
+     "similarity": 0.753
+    },
+    {
+     "ifc_class": "IfcDuctSegment",
+     "file_name": "f59b181b9e364aa0a9f71354a4f57a9e.ifc",
+     "similarity": 0.726
+    },
+    {
+     "ifc_class": "IfcCableCarrierFitting",
+     "file_name": "b49740ff4c5849ccbac9c0705e50eecd.ifc",
+     "similarity": 0.725
+    }
+   ]
+  },
+  {
+   "idx": 37,
+   "name": "Basic Wall:Generic 225mm Wall:1663991",
+   "ifc_type": "IfcWallStandardCase",
+   "category": "Wall",
+   "file": "elements/house_wall_01.ifc",
+   "has_mesh": true,
+   "threshold": 0.039336,
+   "status": "ok",
+   "score": 0.007054,
+   "ratio": 0.179,
+   "unusual": false,
+   "similar": [
+    {
+     "ifc_class": "IfcSpaceHeater",
+     "file_name": "e6cbe0cbaf054fa397d76a2c8cc1e1fa.ifc",
+     "similarity": 0.993
+    },
+    {
+     "ifc_class": "IfcBeam",
+     "file_name": "abc594cb5a9a44c2aca7da5bf527fc52.ifc",
+     "similarity": 0.986
+    },
+    {
+     "ifc_class": "IfcSpaceHeater",
+     "file_name": "a4408d1afdd2447ebfcee413b63ef35b.ifc",
+     "similarity": 0.985
+    },
+    {
+     "ifc_class": "IfcWall",
+     "file_name": "7c41eaab7cc84acbacf3763709d39c5d.ifc",
+     "similarity": 0.971
+    },
+    {
+     "ifc_class": "IfcAirTerminal",
+     "file_name": "7abfdf8a14054b8faed65bd520001e2d.ifc",
+     "similarity": 0.948
+    }
+   ]
+  },
+  {
+   "idx": 38,
+   "name": "Basic Wall:Generic 225mm Wall:1663992",
+   "ifc_type": "IfcWallStandardCase",
+   "category": "Wall",
+   "file": "elements/house_wall_02.ifc",
+   "has_mesh": true,
+   "threshold": 0.039336,
+   "status": "ok",
+   "score": 0.00323,
+   "ratio": 0.082,
+   "unusual": false,
+   "similar": [
+    {
+     "ifc_class": "IfcBeam",
+     "file_name": "3bc6a9a32df04ce0a12b552a52ad8d50.ifc",
+     "similarity": 0.992
+    },
+    {
+     "ifc_class": "IfcRailing",
+     "file_name": "2563bc7d76854363987890019d814141.ifc",
+     "similarity": 0.991
+    },
+    {
+     "ifc_class": "IfcDuctSegment",
+     "file_name": "c5a86f9c529944acb8a279dbf99bb503.ifc",
+     "similarity": 0.99
+    },
+    {
+     "ifc_class": "IfcCableCarrierSegment",
+     "file_name": "d400f3f244964cb9ab233023a4f1dc4a.ifc",
+     "similarity": 0.988
+    },
+    {
+     "ifc_class": "IfcDuctSegment",
+     "file_name": "d3f9a7b62f164e4f96bd716437db2d12.ifc",
+     "similarity": 0.988
+    }
+   ]
+  },
+  {
+   "idx": 39,
+   "name": "Basic Wall:Generic 225mm Wall:1663993",
+   "ifc_type": "IfcWallStandardCase",
+   "category": "Wall",
+   "file": "elements/house_wall_03.ifc",
+   "has_mesh": true,
+   "threshold": 0.039336,
+   "status": "ok",
+   "score": 0.010633,
+   "ratio": 0.27,
+   "unusual": false,
+   "similar": [
+    {
+     "ifc_class": "IfcWall",
+     "file_name": "18bc47b157df49c7870617d0447bb1e5.ifc",
+     "similarity": 0.998
+    },
+    {
+     "ifc_class": "IfcWall",
+     "file_name": "88a73559e3054bf7845d116f837bdc94.ifc",
+     "similarity": 0.994
+    },
+    {
+     "ifc_class": "IfcWall",
+     "file_name": "59166d4214ab4dfaa459663b0d612508.ifc",
+     "similarity": 0.986
+    },
+    {
+     "ifc_class": "IfcDoor",
+     "file_name": "f0c4cf6ed63a4cef833ddcdb0b406fed.ifc",
+     "similarity": 0.973
+    },
+    {
+     "ifc_class": "IfcAirTerminal",
+     "file_name": "d85b8309e61b4198ae023b2899940b19.ifc",
+     "similarity": 0.972
+    }
+   ]
+  },
+  {
+   "idx": 40,
+   "name": "Basic Wall:Generic 225mm Wall:1663994",
+   "ifc_type": "IfcWallStandardCase",
+   "category": "Wall",
+   "file": "elements/house_wall_04.ifc",
+   "has_mesh": true,
+   "threshold": 0.039336,
+   "status": "ok",
+   "score": 0.00839,
+   "ratio": 0.213,
+   "unusual": false,
+   "similar": [
+    {
+     "ifc_class": "IfcBeam",
+     "file_name": "abc594cb5a9a44c2aca7da5bf527fc52.ifc",
+     "similarity": 0.986
+    },
+    {
+     "ifc_class": "IfcLamp",
+     "file_name": "5e1d8f0669c8449f90951ea06db2c254.ifc",
+     "similarity": 0.973
+    },
+    {
+     "ifc_class": "IfcSpaceHeater",
+     "file_name": "a4408d1afdd2447ebfcee413b63ef35b.ifc",
+     "similarity": 0.967
+    },
+    {
+     "ifc_class": "IfcAirTerminal",
+     "file_name": "b169417bf6764a579d2c14e1945599d5.ifc",
+     "similarity": 0.958
+    },
+    {
+     "ifc_class": "IfcSpaceHeater",
+     "file_name": "e6cbe0cbaf054fa397d76a2c8cc1e1fa.ifc",
+     "similarity": 0.945
+    }
+   ]
+  },
+  {
+   "idx": 41,
+   "name": "Basic Wall:Generic 225mm Wall:1663995",
+   "ifc_type": "IfcWallStandardCase",
+   "category": "Wall",
+   "file": "elements/house_wall_05.ifc",
+   "has_mesh": true,
+   "threshold": 0.039336,
+   "status": "ok",
+   "score": 0.005066,
+   "ratio": 0.129,
+   "unusual": false,
+   "similar": [
+    {
+     "ifc_class": "IfcWall",
+     "file_name": "7c41eaab7cc84acbacf3763709d39c5d.ifc",
+     "similarity": 0.998
+    },
+    {
+     "ifc_class": "IfcSpaceHeater",
+     "file_name": "e6cbe0cbaf054fa397d76a2c8cc1e1fa.ifc",
+     "similarity": 0.998
+    },
+    {
+     "ifc_class": "IfcValve",
+     "file_name": "0caab7361b374e0d82aa16f793e2dccb.ifc",
+     "similarity": 0.978
+    },
+    {
+     "ifc_class": "IfcWall",
+     "file_name": "c7e6c3f39c9d49028165b2e4da20415b.ifc",
+     "similarity": 0.977
+    },
+    {
+     "ifc_class": "IfcDuctFitting",
+     "file_name": "19af93bab01a46e1b93417f1695afab7.ifc",
+     "similarity": 0.976
+    }
+   ]
+  },
+  {
+   "idx": 42,
+   "name": "Basic Wall:Generic 225mm Wall:1663996",
+   "ifc_type": "IfcWallStandardCase",
+   "category": "Wall",
+   "file": "elements/house_wall_06.ifc",
+   "has_mesh": true,
+   "threshold": 0.039336,
+   "status": "ok",
+   "score": 0.003433,
+   "ratio": 0.087,
+   "unusual": false,
+   "similar": [
+    {
+     "ifc_class": "IfcWall",
+     "file_name": "c7e6c3f39c9d49028165b2e4da20415b.ifc",
+     "similarity": 0.999
+    },
+    {
+     "ifc_class": "IfcRailing",
+     "file_name": "ce96141e305240fba46f745c0948c329.ifc",
+     "similarity": 0.997
+    },
+    {
+     "ifc_class": "IfcSpaceHeater",
+     "file_name": "c6e8793c660c4189b16cdc558c30e4a1.ifc",
+     "similarity": 0.992
+    },
+    {
+     "ifc_class": "IfcLamp",
+     "file_name": "c27b63c6d6b14c1d84351aa80b9da29d.ifc",
+     "similarity": 0.989
+    },
+    {
+     "ifc_class": "IfcWall",
+     "file_name": "7c41eaab7cc84acbacf3763709d39c5d.ifc",
+     "similarity": 0.987
+    }
+   ]
+  },
+  {
+   "idx": 43,
+   "name": "Basic Wall:Generic 225mm Wall:1663997",
+   "ifc_type": "IfcWallStandardCase",
+   "category": "Wall",
+   "file": "elements/house_wall_07.ifc",
+   "has_mesh": true,
+   "threshold": 0.039336,
+   "status": "ok",
+   "score": 0.010048,
+   "ratio": 0.255,
+   "unusual": false,
+   "similar": [
+    {
+     "ifc_class": "IfcAirTerminal",
+     "file_name": "d85b8309e61b4198ae023b2899940b19.ifc",
+     "similarity": 0.988
+    },
+    {
+     "ifc_class": "IfcWall",
+     "file_name": "18bc47b157df49c7870617d0447bb1e5.ifc",
+     "similarity": 0.98
+    },
+    {
+     "ifc_class": "IfcSpaceHeater",
+     "file_name": "2ac7ed0bf0004973826820ed2388139a.ifc",
+     "similarity": 0.966
+    },
+    {
+     "ifc_class": "IfcWall",
+     "file_name": "88a73559e3054bf7845d116f837bdc94.ifc",
+     "similarity": 0.965
+    },
+    {
+     "ifc_class": "IfcCableCarrierSegment",
+     "file_name": "4cf99930db6e4720b740e5a4cfddf2c6.ifc",
+     "similarity": 0.953
+    }
+   ]
+  },
+  {
+   "idx": 44,
+   "name": "Basic Wall:Generic 225mm Wall:1663998",
+   "ifc_type": "IfcWallStandardCase",
+   "category": "Wall",
+   "file": "elements/house_wall_08.ifc",
+   "has_mesh": true,
+   "threshold": 0.039336,
+   "status": "ok",
+   "score": 0.005171,
+   "ratio": 0.131,
+   "unusual": false,
+   "similar": [
+    {
+     "ifc_class": "IfcDuctFitting",
+     "file_name": "256fbda805c647c6a6a74214407b0c1e.ifc",
+     "similarity": 0.996
+    },
+    {
+     "ifc_class": "IfcOutlet",
+     "file_name": "56cbc0b65a8c4f2fac7ee887dc6bba02.ifc",
+     "similarity": 0.986
+    },
+    {
+     "ifc_class": "IfcRailing",
+     "file_name": "c7783f42f7bd4db3b806b0411274872d.ifc",
+     "similarity": 0.971
+    },
+    {
+     "ifc_class": "IfcWall",
+     "file_name": "62846d82a06149b68686519ce633106b.ifc",
+     "similarity": 0.971
+    },
+    {
+     "ifc_class": "IfcSpaceHeater",
+     "file_name": "7efff2dcae274fe3ad64993ce3c33ab4.ifc",
+     "similarity": 0.968
+    }
+   ]
+  },
+  {
+   "idx": 45,
+   "name": "Basic Wall:Generic 225mm Wall:1663999",
+   "ifc_type": "IfcWallStandardCase",
+   "category": "Wall",
+   "file": "elements/house_wall_09.ifc",
+   "has_mesh": true,
+   "threshold": 0.039336,
+   "status": "ok",
+   "score": 0.005415,
+   "ratio": 0.138,
+   "unusual": false,
+   "similar": [
+    {
+     "ifc_class": "IfcWall",
+     "file_name": "7c41eaab7cc84acbacf3763709d39c5d.ifc",
+     "similarity": 0.998
+    },
+    {
+     "ifc_class": "IfcSpaceHeater",
+     "file_name": "e6cbe0cbaf054fa397d76a2c8cc1e1fa.ifc",
+     "similarity": 0.997
+    },
+    {
+     "ifc_class": "IfcWall",
+     "file_name": "c7e6c3f39c9d49028165b2e4da20415b.ifc",
+     "similarity": 0.979
+    },
+    {
+     "ifc_class": "IfcDuctFitting",
+     "file_name": "19af93bab01a46e1b93417f1695afab7.ifc",
+     "similarity": 0.976
+    },
+    {
+     "ifc_class": "IfcValve",
+     "file_name": "0caab7361b374e0d82aa16f793e2dccb.ifc",
+     "similarity": 0.976
+    }
+   ]
+  },
+  {
+   "idx": 46,
+   "name": "Basic Wall:Generic 225mm Wall:1664000",
+   "ifc_type": "IfcWallStandardCase",
+   "category": "Wall",
+   "file": "elements/house_wall_10.ifc",
+   "has_mesh": true,
+   "threshold": 0.039336,
+   "status": "ok",
+   "score": 0.009366,
+   "ratio": 0.238,
+   "unusual": false,
+   "similar": [
+    {
+     "ifc_class": "IfcSpaceHeater",
+     "file_name": "2ac7ed0bf0004973826820ed2388139a.ifc",
+     "similarity": 0.986
+    },
+    {
+     "ifc_class": "IfcAirTerminal",
+     "file_name": "d85b8309e61b4198ae023b2899940b19.ifc",
+     "similarity": 0.981
+    },
+    {
+     "ifc_class": "IfcRailing",
+     "file_name": "03b691a5b46f4e948552129e00418826.ifc",
+     "similarity": 0.961
+    },
+    {
+     "ifc_class": "IfcWall",
+     "file_name": "18bc47b157df49c7870617d0447bb1e5.ifc",
+     "similarity": 0.959
+    },
+    {
+     "ifc_class": "IfcCableCarrierSegment",
+     "file_name": "4cf99930db6e4720b740e5a4cfddf2c6.ifc",
+     "similarity": 0.943
+    }
+   ]
+  },
+  {
+   "idx": 47,
+   "name": "Basic Wall:Generic 225mm Wall:1664001",
+   "ifc_type": "IfcWallStandardCase",
+   "category": "Wall",
+   "file": "elements/house_wall_11.ifc",
+   "has_mesh": true,
+   "threshold": 0.039336,
+   "status": "ok",
+   "score": 0.008796,
+   "ratio": 0.224,
+   "unusual": false,
+   "similar": [
+    {
+     "ifc_class": "IfcBeam",
+     "file_name": "abc594cb5a9a44c2aca7da5bf527fc52.ifc",
+     "similarity": 0.977
+    },
+    {
+     "ifc_class": "IfcLamp",
+     "file_name": "5e1d8f0669c8449f90951ea06db2c254.ifc",
+     "similarity": 0.973
+    },
+    {
+     "ifc_class": "IfcAirTerminal",
+     "file_name": "b169417bf6764a579d2c14e1945599d5.ifc",
+     "similarity": 0.968
+    },
+    {
+     "ifc_class": "IfcSpaceHeater",
+     "file_name": "a4408d1afdd2447ebfcee413b63ef35b.ifc",
+     "similarity": 0.952
+    },
+    {
+     "ifc_class": "IfcSpaceHeater",
+     "file_name": "3e9a15702fbf434b93f390a913d81fc1.ifc",
+     "similarity": 0.947
+    }
+   ]
+  },
+  {
+   "idx": 48,
+   "name": "Basic Wall:Generic 225mm Wall:1664002",
+   "ifc_type": "IfcWallStandardCase",
+   "category": "Wall",
+   "file": "elements/house_wall_12.ifc",
+   "has_mesh": true,
+   "threshold": 0.039336,
+   "status": "ok",
+   "score": 0.007335,
+   "ratio": 0.186,
+   "unusual": false,
+   "similar": [
+    {
+     "ifc_class": "IfcBeam",
+     "file_name": "abc594cb5a9a44c2aca7da5bf527fc52.ifc",
+     "similarity": 0.99
+    },
+    {
+     "ifc_class": "IfcSpaceHeater",
+     "file_name": "e6cbe0cbaf054fa397d76a2c8cc1e1fa.ifc",
+     "similarity": 0.987
+    },
+    {
+     "ifc_class": "IfcSpaceHeater",
+     "file_name": "a4408d1afdd2447ebfcee413b63ef35b.ifc",
+     "similarity": 0.986
+    },
+    {
+     "ifc_class": "IfcWall",
+     "file_name": "7c41eaab7cc84acbacf3763709d39c5d.ifc",
+     "similarity": 0.962
+    },
+    {
+     "ifc_class": "IfcLamp",
+     "file_name": "5e1d8f0669c8449f90951ea06db2c254.ifc",
+     "similarity": 0.952
+    }
+   ]
+  },
+  {
+   "idx": 49,
+   "name": "Basic Wall:Generic 225mm Wall:1664003",
+   "ifc_type": "IfcWallStandardCase",
+   "category": "Wall",
+   "file": "elements/house_wall_13.ifc",
+   "has_mesh": true,
+   "threshold": 0.039336,
+   "status": "ok",
+   "score": 0.010435,
+   "ratio": 0.265,
+   "unusual": false,
+   "similar": [
+    {
+     "ifc_class": "IfcWall",
+     "file_name": "59166d4214ab4dfaa459663b0d612508.ifc",
+     "similarity": 0.998
+    },
+    {
+     "ifc_class": "IfcDoor",
+     "file_name": "f0c4cf6ed63a4cef833ddcdb0b406fed.ifc",
+     "similarity": 0.997
+    },
+    {
+     "ifc_class": "IfcDoor",
+     "file_name": "069680c41ff048d381dc4ce0c3ab48d6.ifc",
+     "similarity": 0.996
+    },
+    {
+     "ifc_class": "IfcWall",
+     "file_name": "070db97b84e24df0b591eaf74f8e6c9d.ifc",
+     "similarity": 0.993
+    },
+    {
+     "ifc_class": "IfcWall",
+     "file_name": "88a73559e3054bf7845d116f837bdc94.ifc",
+     "similarity": 0.992
+    }
+   ]
+  },
+  {
+   "idx": 50,
+   "name": "Basic Wall:Generic 225mm Wall:1664004",
+   "ifc_type": "IfcWallStandardCase",
+   "category": "Wall",
+   "file": "elements/house_wall_14.ifc",
+   "has_mesh": true,
+   "threshold": 0.039336,
+   "status": "ok",
+   "score": 0.008645,
+   "ratio": 0.22,
+   "unusual": false,
+   "similar": [
+    {
+     "ifc_class": "IfcBeam",
+     "file_name": "abc594cb5a9a44c2aca7da5bf527fc52.ifc",
+     "similarity": 0.979
+    },
+    {
+     "ifc_class": "IfcLamp",
+     "file_name": "5e1d8f0669c8449f90951ea06db2c254.ifc",
+     "similarity": 0.974
+    },
+    {
+     "ifc_class": "IfcAirTerminal",
+     "file_name": "b169417bf6764a579d2c14e1945599d5.ifc",
+     "similarity": 0.965
+    },
+    {
+     "ifc_class": "IfcSpaceHeater",
+     "file_name": "a4408d1afdd2447ebfcee413b63ef35b.ifc",
+     "similarity": 0.956
+    },
+    {
+     "ifc_class": "IfcSpaceHeater",
+     "file_name": "3e9a15702fbf434b93f390a913d81fc1.ifc",
+     "similarity": 0.943
+    }
+   ]
+  },
+  {
+   "idx": 51,
+   "name": "Basic Wall:Generic 225mm Wall:1664005",
+   "ifc_type": "IfcWallStandardCase",
+   "category": "Wall",
+   "file": "elements/house_wall_15.ifc",
+   "has_mesh": true,
+   "threshold": 0.039336,
+   "status": "ok",
+   "score": 0.00636,
+   "ratio": 0.162,
+   "unusual": false,
+   "similar": [
+    {
+     "ifc_class": "IfcSpaceHeater",
+     "file_name": "e6cbe0cbaf054fa397d76a2c8cc1e1fa.ifc",
+     "similarity": 0.992
+    },
+    {
+     "ifc_class": "IfcBeam",
+     "file_name": "abc594cb5a9a44c2aca7da5bf527fc52.ifc",
+     "similarity": 0.989
+    },
+    {
+     "ifc_class": "IfcSpaceHeater",
+     "file_name": "a4408d1afdd2447ebfcee413b63ef35b.ifc",
+     "similarity": 0.989
+    },
+    {
+     "ifc_class": "IfcWall",
+     "file_name": "7c41eaab7cc84acbacf3763709d39c5d.ifc",
+     "similarity": 0.97
+    },
+    {
+     "ifc_class": "IfcValve",
+     "file_name": "0caab7361b374e0d82aa16f793e2dccb.ifc",
+     "similarity": 0.951
+    }
+   ]
+  },
+  {
+   "idx": 52,
+   "name": "Basic Wall:Generic 225mm Wall:1664006",
+   "ifc_type": "IfcWallStandardCase",
+   "category": "Wall",
+   "file": "elements/house_wall_16.ifc",
+   "has_mesh": true,
+   "threshold": 0.039336,
+   "status": "ok",
+   "score": 0.00903,
+   "ratio": 0.23,
+   "unusual": false,
+   "similar": [
+    {
+     "ifc_class": "IfcWall",
+     "file_name": "f4188d0546ec4cf19ba33564761b7312.ifc",
+     "similarity": 0.972
+    },
+    {
+     "ifc_class": "IfcOutlet",
+     "file_name": "9f7f6c7009ff4d338e3416b8c96fe005.ifc",
+     "similarity": 0.97
+    },
+    {
+     "ifc_class": "IfcDoor",
+     "file_name": "b0f4f319f7064af2bd6752f02da7429d.ifc",
+     "similarity": 0.969
+    },
+    {
+     "ifc_class": "IfcCableCarrierFitting",
+     "file_name": "4cc24d58abbe47d7bbd84866230e0782.ifc",
+     "similarity": 0.968
+    },
+    {
+     "ifc_class": "IfcOutlet",
+     "file_name": "ea0a77de882d4e67a58a9ad39f20bbc1.ifc",
+     "similarity": 0.951
+    }
+   ]
+  },
+  {
+   "idx": 53,
+   "name": "Basic Wall:Generic 225mm Wall:1664007",
+   "ifc_type": "IfcWallStandardCase",
+   "category": "Wall",
+   "file": "elements/house_wall_17.ifc",
+   "has_mesh": true,
+   "threshold": 0.039336,
+   "status": "ok",
+   "score": 0.007035,
+   "ratio": 0.179,
+   "unusual": false,
+   "similar": [
+    {
+     "ifc_class": "IfcSpaceHeater",
+     "file_name": "7efff2dcae274fe3ad64993ce3c33ab4.ifc",
+     "similarity": 0.999
+    },
+    {
+     "ifc_class": "IfcRailing",
+     "file_name": "c7783f42f7bd4db3b806b0411274872d.ifc",
+     "similarity": 0.996
+    },
+    {
+     "ifc_class": "IfcAirTerminal",
+     "file_name": "bda57749b3fd41b6ba089881cbfcb70b.ifc",
+     "similarity": 0.989
+    },
+    {
+     "ifc_class": "IfcAirTerminal",
+     "file_name": "e159c68eddc44f2a931975c72d3dc456.ifc",
+     "similarity": 0.984
+    },
+    {
+     "ifc_class": "IfcWall",
+     "file_name": "7647853fff4e42558e7581365cc7ea67.ifc",
+     "similarity": 0.984
+    }
+   ]
+  },
+  {
+   "idx": 54,
+   "name": "Basic Wall:Generic 225mm Wall:1664008",
+   "ifc_type": "IfcWallStandardCase",
+   "category": "Wall",
+   "file": "elements/house_wall_18.ifc",
+   "has_mesh": true,
+   "threshold": 0.039336,
+   "status": "ok",
+   "score": 0.007745,
+   "ratio": 0.197,
+   "unusual": false,
+   "similar": [
+    {
+     "ifc_class": "IfcPipeSegment",
+     "file_name": "967610764ad54675be553792492520f1.ifc",
+     "similarity": 0.99
+    },
+    {
+     "ifc_class": "IfcPipeSegment",
+     "file_name": "4d04fb1377bd4295ab39020f8d580b20.ifc",
+     "similarity": 0.99
+    },
+    {
+     "ifc_class": "IfcPipeSegment",
+     "file_name": "4112242589c346ee910a1dd31b10d2a0.ifc",
+     "similarity": 0.987
+    },
+    {
+     "ifc_class": "IfcPlate",
+     "file_name": "1b241d488bb64bbbb1dd15ee15294827.ifc",
+     "similarity": 0.986
+    },
+    {
+     "ifc_class": "IfcPlate",
+     "file_name": "69fae4512e4c4c33b644d7c2a3116473.ifc",
+     "similarity": 0.985
+    }
+   ]
+  },
+  {
+   "idx": 55,
+   "name": "Basic Wall:Generic 225mm Wall:1664037",
+   "ifc_type": "IfcWallStandardCase",
+   "category": "Wall",
+   "file": "elements/house_wall_19.ifc",
+   "has_mesh": true,
+   "threshold": 0.039336,
+   "status": "ok",
+   "score": 0.006398,
+   "ratio": 0.163,
+   "unusual": false,
+   "similar": [
+    {
+     "ifc_class": "IfcSpaceHeater",
+     "file_name": "7efff2dcae274fe3ad64993ce3c33ab4.ifc",
+     "similarity": 0.992
+    },
+    {
+     "ifc_class": "IfcRailing",
+     "file_name": "c7783f42f7bd4db3b806b0411274872d.ifc",
+     "similarity": 0.99
+    },
+    {
+     "ifc_class": "IfcDuctFitting",
+     "file_name": "256fbda805c647c6a6a74214407b0c1e.ifc",
+     "similarity": 0.986
+    },
+    {
+     "ifc_class": "IfcAirTerminal",
+     "file_name": "bda57749b3fd41b6ba089881cbfcb70b.ifc",
+     "similarity": 0.974
+    },
+    {
+     "ifc_class": "IfcOutlet",
+     "file_name": "56cbc0b65a8c4f2fac7ee887dc6bba02.ifc",
+     "similarity": 0.973
+    }
+   ]
+  }
+ ]
+}
