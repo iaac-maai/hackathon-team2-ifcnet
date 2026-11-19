@@ -51,7 +51,8 @@ export async function onRequestPost({ request, env }) {
   // 3. The 5 most similar elements of the gallery (table filled by scripts/build_gallery.py)
   const { similar, galleryWarning } = await mostSimilar(env, result);
 
-  // 4. Answer the page (the embedding itself is not stored or sent)
+  // 4. Answer the page (the embedding itself is not stored or sent).
+  // points / reconstruction: for the 3D view only, not stored in D1 (null with an older model server)
   return Response.json({
     id,
     created_at: createdAt,
@@ -61,6 +62,8 @@ export async function onRequestPost({ request, env }) {
     unusual: result.unusual,
     similar,
     gallery_warning: galleryWarning,
+    points: Array.isArray(result.points) ? result.points : null,
+    reconstruction: Array.isArray(result.reconstruction) ? result.reconstruction : null,
   });
 }
 
@@ -129,7 +132,7 @@ async function callModel(env, ifcBase64) {
   if (!complete) throw new Error(`No result from the model server: ${text.slice(0, 200)}`);
   const result = JSON.parse(complete.split("data:")[1].trim())[0];
   if (typeof result?.score !== "number") throw new ModelError("Unexpected answer from the model server.");
-  return result; // { score, threshold, unusual, embedding }
+  return result; // { score, threshold, unusual, embedding, points, reconstruction }
 }
 
 async function fetchWithTimeout(url, options = {}, ms = 60000) {

@@ -5,6 +5,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>IFC element check</title>
   <link rel="stylesheet" href="/style.css">
+  <style>
+    /* 3D view: uploaded element vs the model's reconstruction */
+    .views { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .views figure { margin: 0; }
+    .view { height: 300px; border-radius: 8px; overflow: hidden; background: #f3f3ef; cursor: grab; }
+    .views figcaption { font-size: 0.9em; margin-top: 4px; color: #555; }
+    @media (max-width: 640px) { .views { grid-template-columns: 1fr; } }
+  </style>
+  <script type="importmap">
+    { "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/" } }
+  </script>
 </head>
 <body>
   <main>
@@ -25,6 +38,15 @@
           <div id="verdict" class="verdict"></div>
           <p id="file"></p>
           <p id="score"></p>
+        </div>
+      </div>
+      <div id="view-box" hidden>
+        <h3>The shape in 3D</h3>
+        <p>Left: 256 points taken from the surface of your element. Right: the 256 points the model rebuilt from its
+          32 numbers (the score compares exactly these). The more they differ, the higher the score. Drag to rotate (both views turn together), scroll to zoom.</p>
+        <div class="views">
+          <figure><div id="view-in" class="view"></div><figcaption>Your element</figcaption></figure>
+          <figure><div id="view-out" class="view"></div><figcaption>The model's reconstruction</figcaption></figure>
         </div>
       </div>
       <div id="similar-box" hidden>
@@ -61,6 +83,7 @@
       document.getElementById("send").disabled = true;
       document.getElementById("result").hidden = true;
       document.getElementById("similar-box").hidden = true;
+      document.getElementById("view-box").hidden = true;
       statusLine.className = "";
       statusLine.textContent = "Sending to the model…";
       // A normal answer takes a few seconds; if it takes longer, the free Render server is probably asleep
@@ -89,6 +112,12 @@
           `Score ${result.score.toFixed(4)} · threshold ${result.threshold.toFixed(4)} (${ratio.toFixed(2)}× the threshold)`;
         document.getElementById("result").hidden = false;
         showSimilar(result.similar || [], result.gallery_warning);
+        // 3D view (only if the model server sent the points and the 3D script has loaded)
+        if (result.points && result.reconstruction && window.showShapes) {
+          document.getElementById("view-box").hidden = false;
+          try { window.showShapes(result.points, result.reconstruction, result.unusual); }
+          catch (e) { document.getElementById("view-box").hidden = true; }
+        }
         statusLine.className = "";
         statusLine.textContent = "Saved.";
         loadHistory();
@@ -142,6 +171,73 @@
     }
 
     loadHistory();
+  </script>
+
+  <script type="module">
+    // Two point clouds side by side, with linked cameras. z is "up" (world coordinates of the IFC).
+    import * as THREE from "three";
+    import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+
+    const viewers = [];
+    let syncing = false;
+
+    function makeViewer(el) {
+      const renderer = new THREE.WebGLRenderer({ antialias: true });
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      el.appendChild(renderer.domElement);
+      const scene = new THREE.Scene();
+      scene.background = new THREE.Color(0xf3f3ef);
+      const camera = new THREE.PerspectiveCamera(40, 1, 0.01, 100);
+      camera.up.set(0, 0, 1);
+      camera.position.set(2.4, -2.4, 1.6);
+      const controls = new OrbitControls(camera, renderer.domElement);
+      controls.enableDamping = true;
+      return { el, renderer, scene, camera, controls, cloud: null };
+    }
+
+    function resize() {
+      for (const v of viewers) {
+        const w = v.el.clientWidth, h = v.el.clientHeight;
+        if (!w || !h) continue;
+        v.renderer.setSize(w, h);
+        v.camera.aspect = w / h;
+        v.camera.updateProjectionMatrix();
+      }
+    }
+
+    function setCloud(v, xyz, color) {
+      if (v.cloud) { v.scene.remove(v.cloud); v.cloud.geometry.dispose(); }
+      const geometry = new THREE.BufferGeometry();
+      geometry.setAttribute("position", new THREE.BufferAttribute(new Float32Array(xyz.flat()), 3));
+      v.cloud = new THREE.Points(geometry, new THREE.PointsMaterial({ color, size: 0.045 }));
+      v.scene.add(v.cloud);
+    }
+
+    window.showShapes = (points, reconstruction, unusual) => {
+      if (!viewers.length) {
+        viewers.push(makeViewer(document.getElementById("view-in")),
+                     makeViewer(document.getElementById("view-out")));
+        // Turning one view turns the other one too
+        viewers.forEach((v, i) => v.controls.addEventListener("change", () => {
+          if (syncing) return;
+          syncing = true;
+          const other = viewers[1 - i];
+          other.camera.position.copy(v.camera.position);
+          other.controls.target.copy(v.controls.target);
+          other.controls.update();
+          syncing = false;
+        }));
+        window.addEventListener("resize", resize);
+        (function loop() {
+          requestAnimationFrame(loop);
+          for (const v of viewers) { v.controls.update(); v.renderer.render(v.scene, v.camera); }
+        })();
+      }
+      setCloud(viewers[0], points, 0x1f4e79);
+      setCloud(viewers[1], reconstruction, unusual ? 0xc0392b : 0x2e7d5b);
+      for (const v of viewers) { v.camera.position.set(2.4, -2.4, 1.6); v.controls.target.set(0, 0, 0); }
+      resize();
+    };
   </script>
 </body>
 </html>
