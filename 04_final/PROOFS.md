@@ -88,9 +88,7 @@ The app's function calls the model server set in `03_app/wrangler.toml`:
 
 A real result in the app:
 
-![A real result in the app](proofs/proof3_result.png)
-
-<!-- TODO: add the screenshot 04_final/proofs/proof3_result.png (a result in the live app, private window). -->
+![A real result in the app](proof3_result.png)
 
 The three latest results saved in D1 carry the threshold of the model that runs on Render (0.039336, as in the model card):
 
@@ -148,6 +146,40 @@ git log --all -p -S"APP_PASSWORD" | grep -E "^\+.*APP_PASSWORD="
 +# create .dev.vars with one line: APP_PASSWORD=<choose-a-password>   (git-ignored, never commit it)
 +# Local:   put APP_PASSWORD=... in a .dev.vars file (never commit it)
 ```
+
+### The Cloudflare account (checked 20 Nov 2026)
+
+The only secret is `APP_PASSWORD`. Cloudflare stores it encrypted and never shows the value back:
+
+```
+npx wrangler pages secret list --project-name hackathon-ifc-app
+The "production" environment of your Pages project "hackathon-ifc-app" has access to the following secrets:
+  - APP_PASSWORD: Value Encrypted
+```
+
+One Pages project, deployed from our machine (no Git integration):
+
+```
+npx wrangler pages project list
+│ hackathon-ifc-app │ hackathon-ifc-app.pages.dev │ No │
+```
+
+The public variables in `wrangler.toml` are only the model server address and the endpoint name, no keys:
+
+```
+[vars]
+MODEL_URL = "https://hackathon-team2-ifcnet.onrender.com"
+MODEL_API_NAME = "analyse"
+```
+
+Nothing that looks like a key or the password is in the files the website serves (`03_app/public/`):
+
+```
+grep -rIlE "hf_…|ghp_…|sk-…|AKIA…|PRIVATE KEY|APP_PASSWORD" 03_app/public/
+(no matches)
+```
+
+The token in the pages' Cloudflare Web Analytics snippet is public by design (it only identifies the site for page-view counts) and is not a secret.
 
 The password is given to the instructors through the course submission, not in this repository.
 

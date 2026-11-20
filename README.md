@@ -29,6 +29,7 @@ The model server uses the **graph model**, because it reads the IFC file itself 
 | Graph model on Hugging Face | https://huggingface.co/iaac-maai/hackathon-team2-ifcnet-gcn |
 | 2D model on Hugging Face (Monday) | https://huggingface.co/iaac-maai/hackathon-team2-ifcnet-ae |
 | App on Cloudflare (password) | https://hackathon-ifc-app.pages.dev |
+| **Final submission (use case, diagrams, proofs, limitations)** | [`04_final/README.md`](04_final/README.md) |
 | Impulse-talk slides | see `impulse/LINK.md` |
 
 ## Where we stand
@@ -41,6 +42,8 @@ The model server uses the **graph model**, because it reads the IFC file itself 
 ```
 ├── 01_autoencoder/       # Monday: data, notebooks (2D, point cloud, IFC graph), models, results
 ├── 02_model_server/      # Tuesday: Gradio server for the graph model (see its README)
+├── 03_app/               # Wednesday-Thursday: Cloudflare Pages app (password, D1, similarity, 3D, house view)
+├── 04_final/             # Friday: final README, diagrams, proofs
 ├── experiments/          # side tests (three.js renders vs IFCNet renders)
 ├── impulse/LINK.md       # impulse-talk slides
 ├── data/                 # downloaded data, not on GitHub
@@ -81,10 +84,11 @@ Open a notebook in `01_autoencoder/notebook/` and pick the **hackathon** kernel 
 ## AI usage disclosure
 | | |
 |---|---|
-| **Tools** | Claude |
-| **Why** | To support code debugging, understand and fix errors, understand concepts, and structure project documentation. |
-| **Where** | Monday: data preparation, model development and training, anomaly detection, model export and validation, and project documentation. Tuesday: IFC-to-graph pipeline, graph autoencoder, ONNX export, model server and deployment on Render, Hugging Face model card, and documentation. |
-| **How** | As a support tool to review code and solve issues, while independently running the code, reviewing outputs, and validating results. |
+| **Tools** | Claude (chat) and Claude Code (in VS Code) |
+| **Why** | To write and debug code, get recommendations for the ML pipeline, build the app's design and code, and structure the documentation. |
+| **Where** | Monday: data preparation, model development and training, anomaly detection, model export and validation, and project documentation. Tuesday: IFC-to-graph pipeline, graph autoencoder, ONNX export, model server and deployment on Render, Hugging Face model card, and documentation. Wednesday–Thursday: assistance with app development and design, pipeline suggestions, implementation steps, error review and server setup steps, documentation, and proofs. |
+| **How** | The AI proposed code and options; we decided what to keep. We accepted most of the code, changed timeouts and texts after testing, paused user accounts, and rejected a faster password hash that the AI suggested because it would weaken security. |
+
 
 **Lessons learned:**
 - **A model can "work" and still learn nothing.** Our first autoencoder ended with a Sigmoid and collapsed to a blank image (validation error stuck at 0.034). Most pixels are black, so predicting "all black" is already a good guess. A linear output fixed it. Lesson: always look at the reconstructions, not only the loss number.
@@ -96,6 +100,7 @@ Open a notebook in `01_autoencoder/notebook/` and pick the **hackathon** kernel 
 - **Closer to the real data is not automatically better.** Working on the IFC geometry (point cloud, graph) is what a BIM tool needs, but our 3D models scored lower than the 2D one (AUC about 0.6 vs 0.89). Their reconstruction error mostly measures how *complex* an element is, not how *unusual*. Their latent space works better than their reconstruction error.
 - **A server is more than the model.** Some IFC files crash the geometry engine, so the conversion runs in a separate worker process; the model is downloaded from Hugging Face because model files are not in git; and starting that worker once instead of per request cut a prediction on Render from about 40 seconds to a few seconds.
 - **Reproducibility.** Same seed and same split for every setup, cached data and saved checkpoints, and a check that ONNX gives the same output as PyTorch so the server behaves like the notebook.
+- **AI suggestions need checking against the rules.** One suggestion fixed a technical limit by making the password hash weaker. It worked, but it went against the course's security advice, so we dropped it. Lesson: ask what a "fix" costs, not only whether it works.
 - **Next time:** train longer (losses were still falling at 30 epochs), use more than one seed, a stronger graph encoder, and pick the best model using validation only, keeping the test set for the very end.
 
 ## Licence
